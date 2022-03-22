@@ -32,8 +32,8 @@ export type BladeNetworkProvider = {
   waitForReceipt(response: TransactionResponse): Promise<TransactionReceipt>;
   sendRequest<ResponseT = TransactionResponse>(request: Executable<ResponseT>): Promise<ResponseT | TransactionResponse>;
 
-  getAccountBalance(accountId: AccountId): Promise<AccountBalance>;
-  getAccountInfo(accountId: AccountId): Promise<AccountInfo>;
+  getAccountBalance(accountId: AccountId | string): Promise<AccountBalance>;
+  getAccountInfo(accountId: AccountId | string): Promise<AccountInfo>;
   sendTransaction(transaction: Transaction): Promise<TransactionResponse>;
   getLedgerId(): LedgerId | null;
   getMirrorNetwork(): Array<string>;

@@ -2,6 +2,7 @@ import { Client, AccountId, TransferTransaction } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
 import { BladeConnectorAccount, BladeNetworkProvider, HederaNetwork } from '../model/blade';
 import BigNumber from 'bignumber.js';
+import { useBalanceStore } from './balance-store';
 
 type ProviderStoreState = {
   provider?: BladeNetworkProvider,
@@ -43,6 +44,7 @@ export const useProviderStore = defineStore('provider-store', {
     async login() {
       this.provider?.on('connect', this.onLogin);
       await this.provider?.createSession(HederaNetwork.Testnet);
+      this.fetchMyBalance();
     },
 
     onLogin() {
@@ -66,8 +68,11 @@ export const useProviderStore = defineStore('provider-store', {
 
       );
 
-      return this.provider?.sendTransaction(transaction);
+      const result = await this.provider?.sendTransaction(transaction);
+      await this.provider?.waitForReceipt(result!);
+      this.fetchMyBalance();
 
+      return result;
 
     },
 
@@ -75,7 +80,13 @@ export const useProviderStore = defineStore('provider-store', {
 
       if (this.provider && this.provider.account) {
 
-        this.provider.getAccountBalance(this.provider.account?.id);
+        console.log(`gettingmy account balance: ${this.provider.account.id}`);
+        try {
+          const balance = await this.provider.getAccountBalance(this.provider.account!.id);
+          useBalanceStore().setBalance(balance.hbars);
+        } catch (err) {
+          console.warn(`$err`);
+        }
       }
 
     }

@@ -17,6 +17,7 @@ export const useBalanceStore = defineStore('balance-store', {
 
     setBalance(balance: Hbar | BigNumber) {
 
+      console.log(`setting balance: ${balance.toString()}`);
       this.hbar = BigNumber.isBigNumber(balance) ? Hbar.from(balance, HbarUnit.Hbar) : balance;
 
     }

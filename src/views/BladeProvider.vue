@@ -29,7 +29,8 @@
     try {
 
       busy.value=true;
-      providerStore.sendTransfer(transfer);
+      const result = await providerStore.sendTransfer(transfer);
+      console.log(`transfer complete...`);
 
     } catch (err){
 
@@ -49,7 +50,7 @@
   <div v-if="walletLoaded" class="flex flex-col space-y-6">
     <div>Wallet Loaded</div>
     <wallet-account :account="myAccount"/>
-    <wallet-balance />
+    <wallet-balance v-if="myAccount" />
     <form-send-hbar
       @submit="onSubmitTransfer"
       :busy="busy" />

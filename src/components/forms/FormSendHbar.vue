@@ -38,7 +38,6 @@ const accountString = computed({
 
 });
 const onSubmit = async ()=>{
-  console.log(`emitting Submit transaction...`);
   emit('submit', {
     accountId:toAccount.value!,
     amount:amount.value!

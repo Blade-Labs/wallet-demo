@@ -14,7 +14,7 @@ const balanceString = computed(()=>{
 </script>
 
 <template>
-  <div>
-    <figure>Hbar:</figure><div>{{ balanceString }}</div>
+  <div class="flex flex-row justify-between">
+    <figure>My Hbar:</figure><div>{{ balanceString }}</div>
   </div>
 </template>
