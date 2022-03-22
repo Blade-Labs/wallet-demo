@@ -106,7 +106,7 @@ export default async function ({ mode, command }) {
       }),
       // auto-import components by naming in template
       components({
-        dirs: [resolve(__dirname, 'src/components')],
+        dirs: [resolve(__dirname, 'src/components'), resolve(__dirname, 'src/views')],
         dts: resolve(__dirname, 'src/components.d.ts'),
         resolvers: [
           // <i-.. will auto-import icons from unplugin-icons

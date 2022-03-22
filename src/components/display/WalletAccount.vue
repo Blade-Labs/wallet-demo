@@ -1,8 +1,8 @@
 
 <script setup lang="ts">
-import { BladeAccount } from '../model/blade';
+import { BladeConnectorAccount } from '../../model/blade';
 const props = defineProps<{
-  account:BladeAccount
+  account:BladeConnectorAccount
 }>();
 
 </script>

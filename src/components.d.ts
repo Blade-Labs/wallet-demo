@@ -4,7 +4,19 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    WalletAccount: typeof import('./components/WalletAccount.vue')['default']
+    AccountField: typeof import('./components/controls/AccountField.vue')['default']
+    ActionButton: typeof import('./components/controls/ActionButton.vue')['default']
+    BladeConnector: typeof import('./views/BladeConnector.vue')['default']
+    BladeProvider: typeof import('./views/BladeProvider.vue')['default']
+    ButtonOutlined: typeof import('./components/controls/ButtonOutlined.vue')['default']
+    Field: typeof import('./components/display/Field.vue')['default']
+    FormSendHbar: typeof import('./components/forms/FormSendHbar.vue')['default']
+    SpinnerSmall: typeof import('./components/static/SpinnerSmall.vue')['default']
+    SubmitButton: typeof import('./components/controls/SubmitButton.vue')['default']
+    TextBox: typeof import('./components/controls/TextBox.vue')['default']
+    TokenAmountBox: typeof import('./components/controls/TokenAmountBox.vue')['default']
+    WalletAccount: typeof import('./components/display/WalletAccount.vue')['default']
+    WalletBalance: typeof import('./components/display/WalletBalance.vue')['default']
   }
 }
 
