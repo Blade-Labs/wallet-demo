@@ -8,6 +8,7 @@ import "@fontsource/montserrat/latin-500.css"
 import "@fontsource/montserrat/latin-600.css"
 import "@fontsource/montserrat/latin-700.css"
 import { createPinia } from 'pinia'
+import { buildTransaction, buildProto } from './test-bytes';
 
 // Used to assign unique element ids to Component HTML elements.
 let uuid = 1;
@@ -32,3 +33,5 @@ app.mixin({
 
 });
 app.mount('#app');
+
+buildTransaction();

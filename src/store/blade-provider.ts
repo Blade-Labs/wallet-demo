@@ -1,4 +1,4 @@
-import { Client, AccountId, TransferTransaction } from '@hashgraph/sdk';
+import { Client, AccountId, TransferTransaction, Query, Transaction } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
 import { BladeConnectorAccount, BladeNetworkProvider, HederaNetwork } from '../model/blade';
 import BigNumber from 'bignumber.js';
@@ -50,6 +50,12 @@ export const useProviderStore = defineStore('provider-store', {
     onLogin() {
       console.log(`Logged in using Blade Provider.`);
       this.loaded = true;
+    },
+
+    async requestSign(transaction: Transaction) {
+
+      return await this.provider?.signTransaction(transaction);
+
     },
 
     async sendTransfer(transfer: { accountId: AccountId, amount: BigNumber }) {
