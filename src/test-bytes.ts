@@ -2,7 +2,6 @@ import { Transaction, TransferTransaction, ContractExecuteTransaction, ContractC
 
 import protos, { proto } from '@hashgraph/proto';
 
-
 const bytesValues = Object.values({
   "0": 10,
   "1": 215,
@@ -231,6 +230,7 @@ export function buildTransaction() {
 
     const bytes = Uint8Array.from(bytesValues);
     const tx = Transaction.fromBytes(bytes);
+
     if (tx != null) {
       console.log(`trans id: ${tx.transactionId}`);
 
@@ -255,10 +255,28 @@ export function buildProto() {
 
     const bytes = Uint8Array.from(bytesValues);
 
-    const tx = proto.TransactionBody.decode(bytes);
+    const list = proto.TransactionList.decode(bytes);
+    console.log(`list:  ${list.transactionList.length}`);
+
+    for (const tx of list.transactionList) {
+
+      const signed = proto.SignedTransaction.decode(tx.signedTransactionBytes!);
+      //printVars(signed);
+
+      const body = proto.TransactionBody.decode(signed.bodyBytes);
+      //printVars(body);
+      if (body.data) {
+        console.log(`BODY DATA: ${body.data}`);
+      } else {
+        console.log(`NO BODY DATA`);
+      }
+
+    }
+
+    const body = proto.TransactionBody.decode(bytes);
     //const tx = proto.ContractCallTransactionBody.decode(bytes);
 
-    printVars(tx);
+    printVars(body);
 
   } catch (err) {
     console.error(`${err}`);

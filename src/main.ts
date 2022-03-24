@@ -33,5 +33,3 @@ app.mixin({
 
 });
 app.mount('#app');
-
-buildTransaction();
