@@ -67,6 +67,11 @@ export const useProviderStore = defineStore('provider-store', {
 
     },
 
+    async sendRequest(request: Transaction) {
+
+      return this.provider?.sendRequest(request);
+    },
+
     async requestSign(transaction: Transaction) {
 
       return await this.provider?.signTransaction(transaction);
