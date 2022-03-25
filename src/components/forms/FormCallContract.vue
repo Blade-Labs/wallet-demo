@@ -1,36 +1,31 @@
 <script setup lang='ts'>
-import { AccountId } from "@hashgraph/sdk";
+import { AccountId, ContractExecuteTransaction,
+        ContractId, ContractFunctionParameters,
+        Hbar, HbarUnit} from "@hashgraph/sdk";
 import { BigNumber } from "bignumber.js";
 
-const props = defineProps<{
-
-  busy?:boolean
-
-}>();
-
 const amount = ref<BigNumber>();
-const toAccount = ref<AccountId|null>();
+const contractId = ref<ContractId|null>();
 
-const emit = defineEmits<{
+/**
+ * Function to call on contract.
+ */
+const functionName = ref<string>();
 
-  (e:'submit', transfer:{amount:BigNumber, accountId:AccountId}):void
-
-}>();
-
-let _contractId:string = '';
-const contractId = computed({
+let _contractIdString:string = '';
+const contractIdString = computed({
 
   get():string{
-    return _contractId;
+    return _contractIdString;
   },
   set(v:string){
 
-    _contractId = v;
+    _contractIdString = v;
     try {
 
-      toAccount.value = AccountId.fromString(v);
+      contractId.value = ContractId.fromString(v);
     } catch (err){
-      toAccount.value = null;
+      contractId.value = null;
     }
 
   }
@@ -38,35 +33,42 @@ const contractId = computed({
 
 });
 const onSubmit = async ()=>{
-  emit('submit', {
-    accountId:toAccount.value!,
-    amount:amount.value!
-  });
+
+      new ContractExecuteTransaction({
+        amount:Hbar.from(13, HbarUnit.Hbar),
+        contractId:contractId.value!,
+        function:new ContractFunctionParameters(),
+        gas:20000,
+      }).setNodeAccountIds([AccountId.fromString('0.0.3')])
 }
 
 const canSubmit = computed(()=>{
   return amount.value != null &&
           amount.value.gt(0) &&
-          toAccount.value!=null;
+          contractId.value!=null;
 });
 
 </script>
 
 <template>
-  <vue-form id="form_call_contract" @submit.prevent="onSubmit">
+  <vue-form
+    title="Call Contract Function"
+    name="form_call_contract"
+    :onSubmit="onSubmit"
+    :canSubmit="canSubmit">
 
     <div>
       <text-box label="Contact Id"
-        v-model="contractId" />
+        v-model="contractIdString" />
+      <text-box label="Contact Function"
+        v-model="functionName" />
       <token-amount-box
         label="Hbar Amount"
         decimals="8"
         v-model="amount"
       />
-      <submit-button form="form_send_hbar"
-        :busy="busy" 
-        :disabled="!canSubmit">Submit</submit-button>
 
   </div>
+
   </vue-form>
 </template>
