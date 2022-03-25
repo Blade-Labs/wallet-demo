@@ -12,7 +12,7 @@ const addParam = ()=>{
 
   myParams.value.push( {
     key:nextkey++,
-    value:null,
+    value:undefined,
     paramType:ParamType.str
   });
 
@@ -32,8 +32,8 @@ const removeParam = (paramKey:number)=>{
 
 <template>
   <div>
-    <div class="flex flex-row justify-between">
-      <span>Function Parameters</span>
+    <div class="flex flex-row items-center">
+      <span class="mr-5">Function Parameters</span>
       <circle-button class="rounded-full w-8 h-8 min-w-5 min-h-5"
       @click="addParam">&plus;
     </circle-button>

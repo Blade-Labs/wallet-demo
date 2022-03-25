@@ -10,6 +10,6 @@ export type FunctionParam = {
    * UI display key
    */
   key: number,
-  value?: any,
+  value?: string,
   paramType: ParamType
 }

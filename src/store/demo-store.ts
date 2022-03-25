@@ -25,7 +25,6 @@ export const useDemoStore = defineStore('demo-store', {
         console.log(`walletProvided found`);
         this.onLoaded();
       } else {
-        console.log(`waiting for document event`);
         document.addEventListener(walletLoadedEvent, this.onLoaded);
       }
 
@@ -34,7 +33,6 @@ export const useDemoStore = defineStore('demo-store', {
     onLoaded() {
 
       if (window.walletProvider) {
-        console.log(`blade loaded.`);
         this.bladeLoaded = true;
         this.providerNotFound = false;
         useProviderStore().setProvider(window.walletProvider);

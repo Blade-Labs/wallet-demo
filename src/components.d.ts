@@ -15,7 +15,6 @@ declare module 'vue' {
     FormGetReceipt: typeof import('./components/forms/FormGetReceipt.vue')['default']
     FormSendHbar: typeof import('./components/forms/FormSendHbar.vue')['default']
     FunctionParameter: typeof import('./components/controls/FunctionParameter.vue')['default']
-    MyAccount: typeof import('./components/display/MyAccount.vue')['default']
     NetworkInformation: typeof import('./components/display/NetworkInformation.vue')['default']
     SpinnerSmall: typeof import('./components/static/SpinnerSmall.vue')['default']
     SubmitButton: typeof import('./components/controls/SubmitButton.vue')['default']

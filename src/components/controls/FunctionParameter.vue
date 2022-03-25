@@ -34,26 +34,11 @@ const paramValue = computed({
   get(){
     return _myParam.value?.value ?? '';
   },
-  set(v:any){
+  set(v:string){
     _myParam.value.value = v;
   }
 
 });
-
-const inputType = computed(()=>{
-
-  const val = paramType.value;
-  if ( val == ParamType.bool) {
-    return 'checkbox';
-  } else if ( val == ParamType.str){
-    return 'text';
-  } else if ( val == ParamType.num){
-    return 'number';
-  }
-
-
-});
-
 
 const onParamChanged = ()=>{
   emit('update:parameter', _myParam.value);
@@ -71,11 +56,10 @@ const onRemove = ()=>{
 
   <div class="flex flex-row justify-between items-center space-x-4">
     <div class="flex flex-row items-center flex-grow">
-      <input class="flex-grow" 
-        :type="inputType" v-model="paramValue">
+      <input class="flex-grow text-basePurple" type="text" v-model="paramValue">
       <select name="Param type" v-model="paramType"
       
-        class="bg-basePurple ml-2">
+        class="bg-basePurple ml-2 my-1">
         <option v-for="typeKey in paramTypes"
           :key="typeKey"
           :value="typeKey"

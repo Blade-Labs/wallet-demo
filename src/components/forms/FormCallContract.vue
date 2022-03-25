@@ -47,7 +47,7 @@ const onSubmit = async ()=>{
         gas:20000,
       });
 
-    if ( functionName.value != null ) {
+    if ( functionName.value != null && functionName.value != '' ) {
       tx.setFunction( functionName.value!, buildParams() );
     }
 
@@ -72,11 +72,12 @@ const buildParams = ()=>{
     const param = funcParams[i];
 
     if ( param.paramType == ParamType.num) {
-      contractParams.addInt32( param.value as number );
+      const num = parseInt( param.value! );
+      contractParams.addInt32( num );
     } else if ( param.paramType == ParamType.str) {
       contractParams.addString( param.value as string );
     } else if ( param.paramType == ParamType.bool){
-      contractParams.addBool( param.value as boolean);
+      contractParams.addBool(param.value?.toLowerCase() === 'true');
     }
   }
 
