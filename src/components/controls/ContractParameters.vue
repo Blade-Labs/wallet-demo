@@ -7,9 +7,11 @@ const props = defineProps<{
 
 let nextkey = 1;
 
+const myParams = ref(props.parameters);
 const addParam = ()=>{
 
-  props.parameters.push( {
+  console.log(`add func parameter`);
+  myParams.value.push( {
     key:nextkey++,
     value:null,
     paramType:ParamType.str
@@ -19,9 +21,9 @@ const addParam = ()=>{
 
 const removeParam = (paramKey:number)=>{
 
-  const index = props.parameters.findIndex( (v)=>v.key==paramKey);
+  const index = myParams.value.findIndex( (v)=>v.key==paramKey);
   if ( index >= 0 ) {
-    props.parameters.splice( index, 1);
+    myParams.value.splice( index, 1);
   }
 
 
@@ -31,10 +33,9 @@ const removeParam = (paramKey:number)=>{
 
 <template>
   <div>
-    <action-button class="rounded-full w-8 h-8"
-      @click="addParam">&plus;</action-button>
+    <circle-button class="rounded-full w-8 h-8 min-w-5 min-h-5"
+      @click="addParam">&plus;</circle-button>
 
-    
     <function-parameter v-for="p in parameters"
       :key="p.key"
       :parameter="p"

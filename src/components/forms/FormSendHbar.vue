@@ -47,6 +47,7 @@ const canSubmit = computed(()=>{
 
 <template>
 <vue-form
+    title="Send Transaction"
     :name="form_send_hbar"
     :onSubmit="onSubmit"
     :canSubmit="canSubmit">

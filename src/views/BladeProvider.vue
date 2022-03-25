@@ -39,8 +39,8 @@
 <template>
 <section class="w-full h-full">
 
-  <section class="flex flex-row justify-between" v-if="providerStore.hasSession">
-    <div class="flex flex-col space-y-5">
+  <section class="flex flex-row justify-between space-x-5" v-if="providerStore.hasSession">
+    <div class="flex flex-col space-y-5 w-1/2">
 
       <wallet-account :account="myAccount"/>
       <wallet-balance v-if="myAccount" />
@@ -49,7 +49,7 @@
 
 
     </div>
-    <div class="flex flex-col space-y-5 w-5/12">
+    <div class="flex flex-col space-y-5 w-1/2">
 
       <action-button @click="endSession">Close Session</action-button>
       <action-button @click="mockContractCall">Mock Contract Call</action-button>

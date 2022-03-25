@@ -39,10 +39,10 @@ const trySubmit = async ()=>{
 </script>
 
 <template>
+<vue-section :title="title" :open="false" collapsible>
   <form class="flex flex-col space-y-5"
     :name="name"
     @submit.prevent="trySubmit">
-    <label class="font-bold" v-if="title">{{title}}</label>
       <div v-if="errorMessage!=null">{{errorMessage}}</div>
       <slot />
       <slot name="submit">
@@ -51,4 +51,5 @@ const trySubmit = async ()=>{
         </submit-button>
       </slot>
   </form>
+</vue-section>
 </template>

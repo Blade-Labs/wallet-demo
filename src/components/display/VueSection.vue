@@ -7,7 +7,8 @@ const props = defineProps<{
 }>();
 
 const canCollapse = ref<boolean>(
-  (typeof props.collapsible === 'boolean') ? props.collapsible : true);
+  (typeof props.collapsible === 'boolean') ? props.collapsible : true
+);
 
 const isOpen = ref<boolean>( props.open ?? false );
 
@@ -19,11 +20,14 @@ const toggle = ()=>{
 
 
 <template>
-  <section class="p-5 my-5 flex flex-col space-y-5 border-r-4 border-gray">
+  <section class="p-5 my-5 flex flex-col items-stretch
+    space-y-5 border rounded-md border-gray">
     <div v-if="title"
-      class="flex flex-row p-2">
+      class="flex flex-row justify-between p-2">
       <h2>{{title}}</h2>
-      <button v-if="canCollapse" @click="toggle">[{{ isOpen ? '-' : '+' }}]</button>
+      <button v-if="canCollapse"
+        class="text-base"
+        @click="toggle">[{{ isOpen ? ' - ' : ' + ' }}]</button>
     </div>
     <div v-show="!canCollapse||isOpen">
     <slot></slot>

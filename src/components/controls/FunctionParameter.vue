@@ -68,13 +68,16 @@ const onRemove = ()=>{
 
   <div class="flex flex-row">
     <input :type="inputType" v-model="paramValue">
-    <select name="Param type" v-model="paramType">
+    <select name="Param type" v-model="paramType"
+      class="bg-basePurple">
       <option v-for="typeKey in paramTypes" :key="typeKey" :value="typeKey">
         {{ ParamType[typeKey]}}
       </option>
     </select>
-    <action-button class="rounded-full"
-      @click="onRemove">&minus;</action-button>
+    <circle-button
+      class="rounded-full"
+      @click="onRemove">&minus;
+    </circle-button>
   </div>
 
 </template>
