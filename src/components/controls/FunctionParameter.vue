@@ -21,6 +21,9 @@ const paramType = computed({
     return _myParam.value.paramType;
   },
   set(v:ParamType){
+    if ( _myParam.value.paramType != v ) {
+      _myParam.value.value=undefined;
+    }
     _myParam.value.paramType=v;
 
   }
@@ -66,16 +69,22 @@ const onRemove = ()=>{
 
 <template>
 
-  <div class="flex flex-row">
-    <input :type="inputType" v-model="paramValue">
-    <select name="Param type" v-model="paramType"
-      class="bg-basePurple">
-      <option v-for="typeKey in paramTypes" :key="typeKey" :value="typeKey">
-        {{ ParamType[typeKey]}}
-      </option>
-    </select>
+  <div class="flex flex-row justify-between items-center space-x-4">
+    <div class="flex flex-row items-center flex-grow">
+      <input class="flex-grow" 
+        :type="inputType" v-model="paramValue">
+      <select name="Param type" v-model="paramType"
+      
+        class="bg-basePurple ml-2">
+        <option v-for="typeKey in paramTypes"
+          :key="typeKey"
+          :value="typeKey"
+          :selected="typeKey==paramType">
+          {{ ParamType[typeKey]}}
+        </option>
+      </select>
+    </div>
     <circle-button
-      class="rounded-full"
       @click="onRemove">&minus;
     </circle-button>
   </div>

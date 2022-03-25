@@ -10,7 +10,8 @@ const props = defineProps<{
 <template>
   <button
   :disabled="disabled"
-  class="bg-basePurple rounded-full w-10 h-10
+  class="bg-basePurple rounded-full w-8 h-8
+  flex flex-row items-center justify-center
    text-white text-xs text-center font-bold uppercase
    transition-all
    hover:brightness-80

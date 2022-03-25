@@ -46,7 +46,8 @@ const trySubmit = async ()=>{
       <div v-if="errorMessage!=null">{{errorMessage}}</div>
       <slot />
       <slot name="submit">
-        <submit-button :busy="busy" :disabled="!submittable">
+        <submit-button class="w-1/2"
+          :busy="busy" :disabled="!submittable">
           {{ submitText ?? 'Submit' }}
         </submit-button>
       </slot>

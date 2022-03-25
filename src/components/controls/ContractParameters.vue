@@ -10,7 +10,6 @@ let nextkey = 1;
 const myParams = ref(props.parameters);
 const addParam = ()=>{
 
-  console.log(`add func parameter`);
   myParams.value.push( {
     key:nextkey++,
     value:null,
@@ -33,8 +32,12 @@ const removeParam = (paramKey:number)=>{
 
 <template>
   <div>
-    <circle-button class="rounded-full w-8 h-8 min-w-5 min-h-5"
-      @click="addParam">&plus;</circle-button>
+    <div class="flex flex-row justify-between">
+      <span>Function Parameters</span>
+      <circle-button class="rounded-full w-8 h-8 min-w-5 min-h-5"
+      @click="addParam">&plus;
+    </circle-button>
+    </div>
 
     <function-parameter v-for="p in parameters"
       :key="p.key"

@@ -6,7 +6,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     AccountField: typeof import('./components/controls/AccountField.vue')['default']
     ActionButton: typeof import('./components/controls/ActionButton.vue')['default']
-    'ActionButton copy': typeof import('./components/controls/ActionButton copy.vue')['default']
     BladeProvider: typeof import('./views/BladeProvider.vue')['default']
     ButtonOutlined: typeof import('./components/controls/ButtonOutlined.vue')['default']
     CircleButton: typeof import('./components/controls/CircleButton.vue')['default']
@@ -16,6 +15,7 @@ declare module 'vue' {
     FormGetReceipt: typeof import('./components/forms/FormGetReceipt.vue')['default']
     FormSendHbar: typeof import('./components/forms/FormSendHbar.vue')['default']
     FunctionParameter: typeof import('./components/controls/FunctionParameter.vue')['default']
+    MyAccount: typeof import('./components/display/MyAccount.vue')['default']
     NetworkInformation: typeof import('./components/display/NetworkInformation.vue')['default']
     SpinnerSmall: typeof import('./components/static/SpinnerSmall.vue')['default']
     SubmitButton: typeof import('./components/controls/SubmitButton.vue')['default']

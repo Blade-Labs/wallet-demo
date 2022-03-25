@@ -37,6 +37,8 @@ const contractIdString = computed({
 });
 const onSubmit = async ()=>{
 
+  console.log(`contract id: ${contractId.value}`);
+
   const tx =
       new ContractExecuteTransaction({
         amount:Hbar.from(amount.value! as BigNumber, HbarUnit.Hbar),
@@ -97,19 +99,17 @@ const canSubmit = computed(()=>{
     :onSubmit="onSubmit"
     :canSubmit="canSubmit">
 
-    <div>
       <text-box label="Contract Id"
         v-model="contractIdString" />
-      <text-box label="Contract Function"
+      <text-box label="Function Name"
         v-model="functionName" />
       <contract-parameters :parameters="functionParams" />
       <token-amount-box
         label="Hbar Amount"
-        decimals="8"
+        :decimals="8"
         v-model="amount"
       />
 
-  </div>
 
   </vue-form>
 </template>

@@ -48,19 +48,18 @@ const canSubmit = computed(()=>{
 <template>
 <vue-form
     title="Send Transaction"
-    :name="form_send_hbar"
     :onSubmit="onSubmit"
     :canSubmit="canSubmit">
 
-  <div>
+
     <text-box label="To Account"
       v-model="accountString" />
     <token-amount-box
       label="Hbar Amount"
-      decimals="8"
+      :decimals="8"
       v-model="amount"
     />
-  </div>
+
 
 </vue-form>
 </template>

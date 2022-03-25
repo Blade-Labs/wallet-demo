@@ -21,7 +21,8 @@ const toggle = ()=>{
 
 <template>
   <section class="p-5 my-5 flex flex-col items-stretch
-    space-y-5 border rounded-md border-gray">
+    space-y-5 border rounded-md border-gray
+    transition-all">
     <div v-if="title"
       class="flex flex-row justify-between p-2">
       <h2>{{title}}</h2>

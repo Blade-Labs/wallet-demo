@@ -95,7 +95,7 @@ module.exports = {
         "51": 204,
         sm:241,
         "section":414,
-        "button-md":176,
+        "button-md":80,
       },
       width: {
         "4.5": "1.125rem",

@@ -33,7 +33,7 @@ const mirrorNetwork = computed(()=>{
 </script>
 
 <template>
-<vue-section>
+<vue-section collapsible :open="false" title="Network Information">
 
   <div class="flex flex-col items-stretch space-y-3">
 
@@ -48,9 +48,9 @@ const mirrorNetwork = computed(()=>{
       </div>
     </div>
 
-    <div>
+    <div v-if="mirrorNetwork&&mirrorNetwork.length>0">
       <div>Mirror Network</div>
-      <div v-if="mirrorNetwork">
+      <div>
         <div v-for="address in mirrorNetwork" :key="address">
             {{address}}
         </div>
