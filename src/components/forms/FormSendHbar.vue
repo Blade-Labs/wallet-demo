@@ -1,21 +1,11 @@
 <script setup lang='ts'>
 import { AccountId } from "@hashgraph/sdk";
 import { BigNumber } from "bignumber.js";
+import { useProviderStore } from '../../store/blade-provider';
 
-const props = defineProps<{
-
-  busy?:boolean
-
-}>();
-
+const providerStore = useProviderStore();
 const amount = ref<BigNumber>();
 const toAccount = ref<AccountId|null>();
-
-const emit = defineEmits<{
-
-  (e:'submit', transfer:{amount:BigNumber, accountId:AccountId}):void
-
-}>();
 
 let _accountString:string = '';
 const accountString = computed({
@@ -37,11 +27,14 @@ const accountString = computed({
 
 
 });
+
 const onSubmit = async ()=>{
-  emit('submit', {
-    accountId:toAccount.value!,
-    amount:amount.value!
-  });
+
+  const result = await providerStore.sendTransfer(
+    {accountId:toAccount.value!, amount:amount.value!});
+
+  console.log(`transfer complete...`);
+
 }
 
 const canSubmit = computed(()=>{
@@ -53,18 +46,20 @@ const canSubmit = computed(()=>{
 </script>
 
 <template>
-  <form class="flex flex-col space-y-5" id="form_send_hbar" @submit.prevent="onSubmit">
+<vue-form
+    title="Send Transaction"
+    :onSubmit="onSubmit"
+    :canSubmit="canSubmit">
+
 
     <text-box label="To Account"
       v-model="accountString" />
     <token-amount-box
       label="Hbar Amount"
-      decimals="8"
+      :decimals="8"
       v-model="amount"
     />
-    <submit-button form="form_send_hbar"
-      :busy="busy" 
-      :disabled="!canSubmit">Submit</submit-button>
 
-  </form>
+
+</vue-form>
 </template>

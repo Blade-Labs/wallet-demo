@@ -1,55 +1,83 @@
-import { Client, AccountId, TransferTransaction, Query, Transaction } from '@hashgraph/sdk';
+import { Client, AccountId, TransferTransaction, Transaction } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
-import { BladeConnectorAccount, BladeNetworkProvider, HederaNetwork } from '../model/blade';
+import { BladeNetworkProvider, HederaNetwork } from '../api/blade';
 import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
+import { useDemoStore } from './demo-store';
 
 type ProviderStoreState = {
   provider?: BladeNetworkProvider,
-  loaded: boolean
+  hasSession: boolean
 }
 
 export const useProviderStore = defineStore('provider-store', {
 
   state: (): ProviderStoreState => ({
-    provider: undefined,
-    loaded: false
+    provider: window.walletProvider,
+    hasSession: false
   }),
+
   actions: {
 
-    /**
-    * Listen for HederaNetworkProvider defined on window.
-    */
-    load() {
-      console.log(`waiting for hederaWalletLoaded()`);
-      if (window.walletProvider) {
-        this.onLoaded();
+    setProvider(provider?: BladeNetworkProvider) {
+
+      this.provider = provider;
+      if (provider != null) {
+        this.createSession();
       } else {
-        document.addEventListener('hederaWalletLoaded', this.onLoaded, { once: true });
+        useDemoStore().bladeLoaded = false;
       }
 
     },
 
-    onLoaded() {
+    async createSession() {
 
-      if (window.walletProvider) {
-        console.log(`provider found.`);
-        this.provider = window.walletProvider;
-        this.login();
-      } else {
-        console.log(`wallet provider not found...`);
+      try {
+
+        console.log(`bladeProvider: try create Session...`);
+        this.provider?.on('connect', this.onSession);
+        await this.provider?.createSession(HederaNetwork.Testnet);
+        console.log(`Session ready.`);
+        this.hasSession = true;
+        this.fetchMyBalance();
+
+      } catch (err) {
+        this.hasSession = false;
+        console.log(`start session failed: ${err}`);
       }
+
     },
 
-    async login() {
-      this.provider?.on('connect', this.onLogin);
-      await this.provider?.createSession(HederaNetwork.Testnet);
-      this.fetchMyBalance();
+    async closeSession() {
+      console.log(`provider store: try close session...`);
+      const result = await this.provider?.closeSession();
+      console.log(`close session result: ${result}`);
+      if (result) {
+        this.hasSession = false;
+      }
+      return result;
     },
 
-    onLogin() {
-      console.log(`Logged in using Blade Provider.`);
-      this.loaded = true;
+    onSession() {
+      this.hasSession = true;
+      console.log(`Logged in using Blade Wallet Provider.`);
+    },
+
+    async getAccountBalance(accountId: AccountId | string) {
+
+      return this.provider?.getAccountBalance(accountId);
+
+    },
+
+    async getAccountInfo(accountId: AccountId | string) {
+
+      return this.provider?.getAccountInfo(accountId);
+
+    },
+
+    async sendRequest(request: Transaction) {
+
+      return this.provider?.sendRequest(request);
     },
 
     async requestSign(transaction: Transaction) {

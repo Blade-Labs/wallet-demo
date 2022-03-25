@@ -9,6 +9,8 @@ declare global {
 
 import { AccountId, AccountBalance, TransactionId, TransactionResponse, TransactionReceipt, AccountInfo, LedgerId, Query, Transaction } from '@hashgraph/sdk';
 
+export const walletLoadedEvent = 'hederaWalletLoaded';
+
 export type Executable<TResponse> = Query<TResponse> | Transaction;
 
 export enum HederaNetwork {

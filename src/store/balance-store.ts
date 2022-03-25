@@ -1,6 +1,5 @@
 import { Hbar, HbarUnit } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
-import { useProviderStore } from './blade-provider';
 import BigNumber from 'bignumber.js';
 
 type BalanceStoreState = {
@@ -17,7 +16,6 @@ export const useBalanceStore = defineStore('balance-store', {
 
     setBalance(balance: Hbar | BigNumber) {
 
-      console.log(`setting balance: ${balance.toString()}`);
       this.hbar = BigNumber.isBigNumber(balance) ? Hbar.from(balance, HbarUnit.Hbar) : balance;
 
     }

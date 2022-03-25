@@ -1,76 +1,50 @@
 <script setup lang="ts">
 
-  /**
-   * Sample using legacy blade connector
-   */
-
   import { useProviderStore } from '@/store/blade-provider';
-  import {Client, AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
-  import BigNumber from 'bignumber.js';
-  import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../model/blade';
+  import { AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
+  import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../api/blade';
 
-  const testContractId:string = '0.0.33986225';
+  const testContractId:string = '0.0.01';
 
   const providerStore = useProviderStore();
-
-  const errorRef = ref<string>();
-  const busy = ref<boolean>(false);
-
-  providerStore.load();
-
-  const walletLoaded = computed(()=>{
-    return providerStore.loaded;
-  });
 
   const myAccount = computed(()=>{
     return providerStore.account;
   });
 
-  const mockContractCall = async ()=>{
-
-    providerStore.requestSign(
-      new ContractExecuteTransaction({
-        amount:Hbar.from(13, HbarUnit.Hbar),
-        contractId:testContractId,
-        gas:20000,
-      }).setNodeAccountIds([AccountId.fromString('0.0.3')])
-    );
-
-  }
-
-  const onSubmitTransfer = async ( transfer:{amount:BigNumber, accountId:AccountId})=>{
-
-    try {
-
-      busy.value=true;
-      const result = await providerStore.sendTransfer(transfer);
-      console.log(`transfer complete...`);
-
-    } catch (err){
-
-      errorRef.value=`${err}`;
-    } finally {
-      busy.value=false;
-    }
-
-
+  const createSession = async()=>{
+    console.log(`trying to create session.`);
+    return providerStore.createSession();
   }
 
 </script>
 
 
 <template>
-<div class="space-y-4">
-  <div v-if="walletLoaded" class="flex flex-col space-y-6">
-    <div>Wallet Loaded</div>
-    <wallet-account :account="myAccount"/>
-    <wallet-balance v-if="myAccount" />
-    <action-button @click="mockContractCall">Mock Contract Call</action-button>
-    <form-send-hbar
-      @submit="onSubmitTransfer"
-      :busy="busy" />
-  </div>
-  <div v-else>WALLET NOT LOADED</div>
-  <div v-if="errorRef">{{errorRef}}</div>
-</div>
+<section class="w-full h-full">
+
+  <section class="flex flex-row justify-between space-x-5" v-if="providerStore.hasSession">
+    <div class="flex flex-col space-y-5 w-1/2">
+
+      <wallet-account :account="myAccount"/>
+      <form-send-hbar />
+      <form-get-receipt />
+
+
+    </div>
+    <div class="flex flex-col space-y-5 w-1/2">
+
+      <network-information />
+      <form-call-contract />
+
+    </div>
+
+  </section>
+  <section v-else>
+
+    <action-button @click="createSession">New Session</action-button>
+
+  </section>
+
+</section>
 </template>

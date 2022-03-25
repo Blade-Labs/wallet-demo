@@ -1,6 +1,9 @@
 <script setup lang="ts">
 
-  const useBladeConnector = ref<boolean>(false);
+  import { useDemoStore } from './store/demo-store';
+
+  const demoStore = useDemoStore();
+  demoStore.load();
 
 </script>
 
@@ -14,8 +17,12 @@
         font-bold
         p-10">
 
-      <blade-connector v-if="useBladeConnector" />
-      <blade-provider v-else />
+
+      <blade-provider v-if="demoStore.bladeLoaded" />
+      <div v-else-if="demoStore.providerNotFound">
+        Blade Wallet Provider Not Found.
+      </div>
+
 
     </div>
 

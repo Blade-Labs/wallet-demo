@@ -9,8 +9,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <button type="submit" :disabled="disabled||busy" :form="form"
-  class="bg-basePurple 
+  <button type="submit"
+    :disabled="disabled||busy"
+    :formtarget="form"
+    class="bg-basePurple 
     box-content hover:box-content
     rounded-xl h-10 max-h-10 px-4.5 min-w-button-md
     disabled:opacity-20 transition-all
