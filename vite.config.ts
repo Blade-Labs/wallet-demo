@@ -49,13 +49,11 @@ export default async function ({ mode, command }) {
 
   const api_base = getApiBase(process.env.VITE_API_BASE);
 
-  console.log(`Executor api server: ${api_base}`);
   let securityPolicies = [
     "default-src 'self'",
     "connect-src 'self' " +
     [
       api_base,
-      "api.coingecko.com",
     ].join(" "),
     "font-src 'self' data:",
     isProduction ? "style-src 'self'" : "style-src 'self' 'unsafe-inline' 'unsafe-eval'",

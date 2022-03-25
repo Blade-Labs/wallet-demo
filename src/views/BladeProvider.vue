@@ -7,9 +7,9 @@
   import { useProviderStore } from '@/store/blade-provider';
   import {Client, AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
   import BigNumber from 'bignumber.js';
-  import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../model/blade';
+  import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../api/blade';
 
-  const testContractId:string = '0.0.33986225';
+  const testContractId:string = '0.0.01';
 
   const providerStore = useProviderStore();
 
@@ -18,14 +18,18 @@
 
   providerStore.load();
 
-  const walletLoaded = computed(()=>{
-    return providerStore.loaded;
-  });
 
   const myAccount = computed(()=>{
     return providerStore.account;
   });
 
+  const newSession = async()=>{
+    return providerStore.newSession();
+  }
+
+  const endSession = async()=>{
+    return providerStore.closeSession();
+  }
   const mockContractCall = async ()=>{
 
     providerStore.requestSign(
@@ -60,17 +64,41 @@
 
 
 <template>
-<div class="space-y-4">
+<section class="flex flex-row justify-between">
+
+  <section v-if="providerStore.hasSession">
+    <div class="flex flex-col space-y-5">
+
+      <wallet-account :account="myAccount"/>
+      <wallet-balance v-if="myAccount" />
+      <form-send-hbar
+        @submit="onSubmitTransfer"
+        :busy="busy" />
+
+
+    </div>
+    <div class="flex flex-col space-y-5">
+
+      <action-button @click="mockContractCall">Mock Contract Call</action-button>
+      <action-button @click="endSession">Close Session</action-button>
+
+    </div>
+
+  </section>
+  <section v-else>
+
+    <action-button @click="newSession">New Session</action-button>
+
+  </section>
+
   <div v-if="walletLoaded" class="flex flex-col space-y-6">
     <div>Wallet Loaded</div>
-    <wallet-account :account="myAccount"/>
-    <wallet-balance v-if="myAccount" />
-    <action-button @click="mockContractCall">Mock Contract Call</action-button>
-    <form-send-hbar
-      @submit="onSubmitTransfer"
-      :busy="busy" />
+
+
+
   </div>
   <div v-else>WALLET NOT LOADED</div>
   <div v-if="errorRef">{{errorRef}}</div>
-</div>
+
+</section>
 </template>

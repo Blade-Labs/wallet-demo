@@ -15,7 +15,6 @@ module.exports = {
       insigniaWhite: "#EBF4FA",
       baseGrey: "#3C3E42",
       darkGrey: "#26282D",
-      inkBlotch: "#16618A",
       basePurple: "#7363E9",
       aquarellePurple: "#DAE5F3",
       lynxScreenBlue: "#4CB5EF",

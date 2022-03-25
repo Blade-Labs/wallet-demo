@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { BladeConnectorAccount } from '../../model/blade';
+import { BladeConnectorAccount } from '../../api/blade';
 const props = defineProps<{
   account:BladeConnectorAccount
 }>();

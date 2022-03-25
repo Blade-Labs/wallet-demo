@@ -1,55 +1,70 @@
-import { Client, AccountId, TransferTransaction, Query, Transaction } from '@hashgraph/sdk';
+import { Client, AccountId, TransferTransaction, Transaction } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
-import { BladeConnectorAccount, BladeNetworkProvider, HederaNetwork } from '../model/blade';
+import { BladeNetworkProvider, HederaNetwork } from '../api/blade';
 import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
 
 type ProviderStoreState = {
   provider?: BladeNetworkProvider,
-  loaded: boolean
+  hasSession: boolean
 }
 
 export const useProviderStore = defineStore('provider-store', {
 
   state: (): ProviderStoreState => ({
     provider: undefined,
-    loaded: false
+    hasSession: false
   }),
+
   actions: {
-
-    /**
-    * Listen for HederaNetworkProvider defined on window.
-    */
-    load() {
-      console.log(`waiting for hederaWalletLoaded()`);
-      if (window.walletProvider) {
-        this.onLoaded();
-      } else {
-        document.addEventListener('hederaWalletLoaded', this.onLoaded, { once: true });
-      }
-
-    },
 
     onLoaded() {
 
       if (window.walletProvider) {
-        console.log(`provider found.`);
         this.provider = window.walletProvider;
-        this.login();
+        this.newSession();
       } else {
-        console.log(`wallet provider not found...`);
+        console.log(`Wallet provider not found...`);
       }
     },
 
-    async login() {
-      this.provider?.on('connect', this.onLogin);
-      await this.provider?.createSession(HederaNetwork.Testnet);
-      this.fetchMyBalance();
+    async newSession() {
+
+      try {
+
+        this.provider?.on('connect', this.onSession);
+        await this.provider?.createSession(HederaNetwork.Testnet);
+        this.fetchMyBalance();
+
+      } catch (err) {
+        this.hasSession = false;
+      }
+
     },
 
-    onLogin() {
-      console.log(`Logged in using Blade Provider.`);
-      this.loaded = true;
+    async closeSession() {
+      const result = await this.provider?.closeSession();
+      if (result) {
+        this.hasSession = false;
+      }
+      return result;
+    },
+
+    onSession() {
+      this.hasSession = true;
+      console.log(`Logged in using Blade Wallet Provider.`);
+    },
+
+    async getAccountBalance(accountId: AccountId | string) {
+
+      return this.provider?.getAccountBalance(accountId);
+
+    },
+
+    async getAccountInfo(accountId: AccountId | string) {
+
+      return this.provider?.getAccountInfo(accountId);
+
     },
 
     async requestSign(transaction: Transaction) {

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
-  const useBladeConnector = ref<boolean>(false);
+  import { useDemoStore } from './store/demo-store';
+
+  const demoStore = useDemoStore();
 
 </script>
 
@@ -14,8 +16,14 @@
         font-bold
         p-10">
 
-      <blade-connector v-if="useBladeConnector" />
-      <blade-provider v-else />
+      <div v-if="demoStore.bladeLoaded">
+
+        <blade-provider/>
+
+      </div>
+      <div v-else>
+      </div>
+
 
     </div>
 
