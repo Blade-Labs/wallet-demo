@@ -46,7 +46,10 @@ const canSubmit = computed(()=>{
 </script>
 
 <template>
-<vue-form :name="form_send_hbar" :onSubmit="onSubmit" :canSubmit="canSubmit">
+<vue-form
+    :name="form_send_hbar"
+    :onSubmit="onSubmit"
+    :canSubmit="canSubmit">
 
   <div>
     <text-box label="To Account"
@@ -56,9 +59,6 @@ const canSubmit = computed(()=>{
       decimals="8"
       v-model="amount"
     />
-    <submit-button form="form_send_hbar"
-      :busy="busy" 
-      :disabled="!canSubmit">Submit</submit-button>
   </div>
 
 </vue-form>

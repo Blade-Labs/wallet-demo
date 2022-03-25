@@ -1,17 +1,17 @@
-import { Hbar, HbarUnit } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
 import { useProviderStore } from './blade-provider';
-import BigNumber from 'bignumber.js';
 import { walletLoadedEvent } from '../api/blade';
 
 type DemoStoreState = {
-  bladeLoaded: boolean
+  bladeLoaded: boolean,
+  providerNotFound: boolean,
 }
 
 export const useDemoStore = defineStore('demo-store', {
 
   state: (): DemoStoreState => ({
-    bladeLoaded: false
+    bladeLoaded: false,
+    providerNotFound: false
   }),
 
   actions: {
@@ -33,7 +33,10 @@ export const useDemoStore = defineStore('demo-store', {
 
       if (window.walletProvider) {
         this.bladeLoaded = true;
-        useProviderStore().newSession();
+        this.providerNotFound = false;
+        useProviderStore().createSession();
+      } else {
+        this.providerNotFound = true;
       }
 
     },

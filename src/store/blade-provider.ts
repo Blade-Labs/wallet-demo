@@ -22,13 +22,13 @@ export const useProviderStore = defineStore('provider-store', {
 
       if (window.walletProvider) {
         this.provider = window.walletProvider;
-        this.newSession();
+        this.createSession();
       } else {
         console.log(`Wallet provider not found...`);
       }
     },
 
-    async newSession() {
+    async createSession() {
 
       try {
 

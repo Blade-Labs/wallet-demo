@@ -2,9 +2,9 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-
+  title?:string,
   onSubmit?:()=>Promise<void>,
-  canSubmit?:()=>Promise<boolean>,
+  canSubmit?:boolean,
   submitText?:string,
   name?:string,
   error?:string
@@ -13,6 +13,10 @@ const props = defineProps<{
 
 const busy = ref<boolean>(false);
 const errorMessage = ref<string>();
+
+const submittable = computed(()=>{
+  return props.canSubmit ?? true;
+});
 
 const trySubmit = async ()=>{
 
@@ -37,11 +41,14 @@ const trySubmit = async ()=>{
 <template>
   <form class="flex flex-col space-y-5"
     :name="name"
-    @submit.prevent="onSubmit">
-    <div v-if="errorMessage!=null">{{errorMessage}}</div>
-    <slot />
-    <slot name="submit">
-      <submit-button :disabled="props.canSubmit">{{ submitText ?? 'Submit' }}</submit-button>
-    </slot>
+    @submit.prevent="trySubmit">
+    <label class="font-bold" v-if="title">{{title}}</label>
+      <div v-if="errorMessage!=null">{{errorMessage}}</div>
+      <slot />
+      <slot name="submit">
+        <submit-button :busy="busy" :disabled="!submittable">
+          {{ submitText ?? 'Submit' }}
+        </submit-button>
+      </slot>
   </form>
 </template>

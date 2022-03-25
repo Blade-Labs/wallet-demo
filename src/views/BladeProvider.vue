@@ -1,30 +1,19 @@
 <script setup lang="ts">
 
-  /**
-   * Sample using legacy blade connector
-   */
-
   import { useProviderStore } from '@/store/blade-provider';
-  import {Client, AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
-  import BigNumber from 'bignumber.js';
+  import { AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
   import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../api/blade';
 
   const testContractId:string = '0.0.01';
 
   const providerStore = useProviderStore();
 
-  const errorRef = ref<string>();
-  const busy = ref<boolean>(false);
-
-  providerStore.load();
-
-
   const myAccount = computed(()=>{
     return providerStore.account;
   });
 
-  const newSession = async()=>{
-    return providerStore.newSession();
+  const createSession = async()=>{
+    return providerStore.createSession();
   }
 
   const endSession = async()=>{
@@ -42,24 +31,6 @@
 
   }
 
-  const onSubmitTransfer = async ( transfer:{amount:BigNumber, accountId:AccountId})=>{
-
-    try {
-
-      busy.value=true;
-      const result = await providerStore.sendTransfer(transfer);
-      console.log(`transfer complete...`);
-
-    } catch (err){
-
-      errorRef.value=`${err}`;
-    } finally {
-      busy.value=false;
-    }
-
-
-  }
-
 </script>
 
 
@@ -71,34 +42,24 @@
 
       <wallet-account :account="myAccount"/>
       <wallet-balance v-if="myAccount" />
-      <form-send-hbar
-        @submit="onSubmitTransfer"
-        :busy="busy" />
+      <form-send-hbar />
+      <form-get-receipt />
 
 
     </div>
     <div class="flex flex-col space-y-5">
 
-      <action-button @click="mockContractCall">Mock Contract Call</action-button>
       <action-button @click="endSession">Close Session</action-button>
-
+      <action-button @click="mockContractCall">Mock Contract Call</action-button>
+      <network-information />
     </div>
 
   </section>
   <section v-else>
 
-    <action-button @click="newSession">New Session</action-button>
+    <action-button @click="createSession">New Session</action-button>
 
   </section>
-
-  <div v-if="walletLoaded" class="flex flex-col space-y-6">
-    <div>Wallet Loaded</div>
-
-
-
-  </div>
-  <div v-else>WALLET NOT LOADED</div>
-  <div v-if="errorRef">{{errorRef}}</div>
 
 </section>
 </template>
