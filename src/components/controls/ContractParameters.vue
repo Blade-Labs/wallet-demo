@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ContractFunctionParameters } from "@hashgraph/sdk";
 import { FunctionParam, ParamType } from '../../model/contract';
 
 const props = defineProps<{
@@ -13,14 +12,14 @@ const addParam = ()=>{
   props.parameters.push( {
     key:nextkey++,
     value:null,
-    type:ParamType.str
+    paramType:ParamType.str
   });
 
 }
 
-const removeParam = (funcParam:FunctionParam)=>{
+const removeParam = (paramKey:number)=>{
 
-  const index = props.parameters.findIndex( (v)=>v.key==funcParam.key);
+  const index = props.parameters.findIndex( (v)=>v.key==paramKey);
   if ( index >= 0 ) {
     props.parameters.splice( index, 1);
   }
@@ -32,10 +31,13 @@ const removeParam = (funcParam:FunctionParam)=>{
 
 <template>
   <div>
-    <action-button class="rounded-full"
+    <action-button class="rounded-full w-8 h-8"
       @click="addParam">&plus;</action-button>
 
-    <function-parameter v-for="p in parameters" :key="p.key"
+    
+    <function-parameter v-for="p in parameters"
+      :key="p.key"
+      :parameter="p"
       @remove="removeParam" />
 
   </div>

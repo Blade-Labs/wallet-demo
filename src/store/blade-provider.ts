@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { BladeNetworkProvider, HederaNetwork } from '../api/blade';
 import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
+import { useDemoStore } from './demo-store';
 
 type ProviderStoreState = {
   provider?: BladeNetworkProvider,
@@ -12,38 +13,45 @@ type ProviderStoreState = {
 export const useProviderStore = defineStore('provider-store', {
 
   state: (): ProviderStoreState => ({
-    provider: undefined,
+    provider: window.walletProvider,
     hasSession: false
   }),
 
   actions: {
 
-    onLoaded() {
+    setProvider(provider?: BladeNetworkProvider) {
 
-      if (window.walletProvider) {
-        this.provider = window.walletProvider;
+      this.provider = provider;
+      if (provider != null) {
         this.createSession();
       } else {
-        console.log(`Wallet provider not found...`);
+        useDemoStore().bladeLoaded = false;
       }
+
     },
 
     async createSession() {
 
       try {
 
+        console.log(`bladeProvider: try create Session...`);
         this.provider?.on('connect', this.onSession);
         await this.provider?.createSession(HederaNetwork.Testnet);
+        console.log(`Session ready.`);
+        this.hasSession = true;
         this.fetchMyBalance();
 
       } catch (err) {
         this.hasSession = false;
+        console.log(`start session failed: ${err}`);
       }
 
     },
 
     async closeSession() {
+      console.log(`provider store: try close session...`);
       const result = await this.provider?.closeSession();
+      console.log(`close session result: ${result}`);
       if (result) {
         this.hasSession = false;
       }

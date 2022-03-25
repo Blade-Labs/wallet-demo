@@ -69,11 +69,11 @@ const buildParams = ()=>{
 
     const param = funcParams[i];
 
-    if ( param.type == ParamType.num) {
+    if ( param.paramType == ParamType.num) {
       contractParams.addInt32( param.value as number );
-    } else if ( param.type == ParamType.str) {
+    } else if ( param.paramType == ParamType.str) {
       contractParams.addString( param.value as string );
-    } else if ( param.type == ParamType.bool){
+    } else if ( param.paramType == ParamType.bool){
       contractParams.addBool( param.value as boolean);
     }
   }

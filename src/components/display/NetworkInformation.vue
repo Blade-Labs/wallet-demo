@@ -6,14 +6,14 @@ import { LedgerId } from '@hashgraph/sdk';
 
 const providerStore = useProviderStore();
 
-const ledgerId = computed(()=>{
+const ledgerIdString = computed(()=>{
 
   const ledgerId = providerStore.provider?.getLedgerId();
   if ( ledgerId) {
 
     return `${ledgerId.toString()}`
   } else {
-    return '';
+    return 'Not found.';
   }
 
 });
@@ -37,7 +37,7 @@ const mirrorNetwork = computed(()=>{
 
   <div class="flex flex-col items-stretch space-y-3">
 
-    <div>Ledger ID:</div><div>{{LedgerId}}</div>
+    <div class="flex flex-row justify-between"><div>Ledger ID:</div><div>{{ledgerIdString}}</div></div>
 
     <div>
       <div>Network</div>

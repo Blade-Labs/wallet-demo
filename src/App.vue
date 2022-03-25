@@ -17,11 +17,8 @@
         font-bold
         p-10">
 
-      <div v-if="demoStore.bladeLoaded">
 
-        <blade-provider />
-
-      </div>
+      <blade-provider v-if="demoStore.bladeLoaded" />
       <div v-else-if="demoStore.providerNotFound">
         Blade Wallet Provider Not Found.
       </div>

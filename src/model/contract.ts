@@ -12,5 +12,5 @@ export type FunctionParam = {
    */
   key: number,
   value?: any,
-  type: ParamType
+  paramType: ParamType
 }

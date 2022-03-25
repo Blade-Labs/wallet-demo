@@ -22,9 +22,11 @@ export const useDemoStore = defineStore('demo-store', {
     load() {
 
       if (window.walletProvider) {
+        console.log(`walletProvided found`);
         this.onLoaded();
       } else {
-        document.addEventListener(walletLoadedEvent, this.onLoaded, { once: true });
+        console.log(`waiting for document event`);
+        document.addEventListener(walletLoadedEvent, this.onLoaded);
       }
 
     },
@@ -32,10 +34,13 @@ export const useDemoStore = defineStore('demo-store', {
     onLoaded() {
 
       if (window.walletProvider) {
+        console.log(`blade loaded.`);
         this.bladeLoaded = true;
         this.providerNotFound = false;
-        useProviderStore().createSession();
+        useProviderStore().setProvider(window.walletProvider);
       } else {
+        console.log(`wallet not found`);
+        this.bladeLoaded = false;
         this.providerNotFound = true;
       }
 

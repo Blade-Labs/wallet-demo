@@ -13,10 +13,12 @@
   });
 
   const createSession = async()=>{
+    console.log(`trying to create session.`);
     return providerStore.createSession();
   }
 
   const endSession = async()=>{
+    console.log(`ending session.`)
     return providerStore.closeSession();
   }
   const mockContractCall = async ()=>{
@@ -35,9 +37,9 @@
 
 
 <template>
-<section class="flex flex-row justify-between">
+<section class="w-full h-full">
 
-  <section v-if="providerStore.hasSession">
+  <section class="flex flex-row justify-between" v-if="providerStore.hasSession">
     <div class="flex flex-col space-y-5">
 
       <wallet-account :account="myAccount"/>
@@ -47,11 +49,13 @@
 
 
     </div>
-    <div class="flex flex-col space-y-5">
+    <div class="flex flex-col space-y-5 w-5/12">
 
       <action-button @click="endSession">Close Session</action-button>
       <action-button @click="mockContractCall">Mock Contract Call</action-button>
       <network-information />
+      <form-call-contract />
+
     </div>
 
   </section>

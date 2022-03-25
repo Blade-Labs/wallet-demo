@@ -2,38 +2,37 @@
 import { FunctionParam, ParamType } from '../../model/contract';
 
 const props = defineProps<{
-  modelValue:FunctionParam
+  parameter:FunctionParam
 }>();
 
 const emit = defineEmits<{
 
-  (e:'update:modelValue', param:FunctionParam):void;
+  (e:'update:parameter', param:FunctionParam):void;
   (e:'remove', key:number):void;
 
 }>();
 
-const _myParam = ref<FunctionParam>( props.modelValue);
+const _myParam = ref<FunctionParam>( props.parameter);
 const paramTypes = Object.keys( ParamType);
 
 const paramType = computed({
 
-  get(){
-    return _myParam.value.type;
+  get():ParamType{
+    return _myParam.value.paramType;
   },
   set(v:ParamType){
-    _myParam.value.type=v;
-    onParamChanged();
+    _myParam.value.paramType=v;
+
   }
 
 });
 const paramValue = computed({
 
   get(){
-    return _myParam.value.value;
+    return _myParam.value?.value ?? '';
   },
   set(v:any){
     _myParam.value.value = v;
-    onParamChanged();
   }
 
 });
@@ -54,7 +53,7 @@ const inputType = computed(()=>{
 
 
 const onParamChanged = ()=>{
-  emit('update:modelValue', _myParam.value);
+  emit('update:parameter', _myParam.value);
 }
 
 const onRemove = ()=>{
@@ -68,9 +67,9 @@ const onRemove = ()=>{
 <template>
 
   <div class="flex flex-row">
-    <input :type="inputType">
+    <input :type="inputType" v-model="paramValue">
     <select name="Param type" v-model="paramType">
-      <option v-for="typeKey in paramTypes" :key="typeKey" :value="type">
+      <option v-for="typeKey in paramTypes" :key="typeKey" :value="typeKey">
         {{ ParamType[typeKey]}}
       </option>
     </select>
