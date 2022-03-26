@@ -11,7 +11,7 @@
     "check:vue": "vue-tsc --noEmit",
     "build": "cross-env NODE_ENV=production vite build",
     "host": "vite --host",
-    "serve": "vite preview",
+    "serve": "vite preview --host",
     "clear": "rimraf dist"
   },
   "author": "",
