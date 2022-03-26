@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 COPY ./ ./
 RUN pnpm i && pnpm build
 EXPOSE 3001
-CMD ["pnpm", "host"]
+CMD ["pnpm", "serve"]
