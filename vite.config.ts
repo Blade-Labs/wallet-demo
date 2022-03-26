@@ -130,7 +130,7 @@ export default async function ({ mode, command }) {
     server: {
       port: 3001,
       cors: true,
-      https: true,
+      https: false,
       hmr: {
         host: process.env.DEV_HOST ?? 'localhost',
       },
