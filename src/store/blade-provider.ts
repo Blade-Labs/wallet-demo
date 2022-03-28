@@ -1,4 +1,4 @@
-import { Client, AccountId, TransferTransaction, Transaction } from '@hashgraph/sdk';
+import { Client, AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
 import { BladeNetworkProvider, HederaNetwork } from '../api/blade';
 import BigNumber from 'bignumber.js';
@@ -77,7 +77,11 @@ export const useProviderStore = defineStore('provider-store', {
 
     async sendRequest(request: Transaction) {
 
-      return this.provider?.sendRequest(request);
+      return this.provider!.sendRequest(request);
+    },
+
+    async waitReceipt(response: TransactionResponse): Promise<TransactionReceipt> {
+      return this.provider!.waitForReceipt(response);
     },
 
     async requestSign(transaction: Transaction) {
@@ -114,7 +118,7 @@ export const useProviderStore = defineStore('provider-store', {
 
       if (this.provider && this.provider.account) {
 
-        console.log(`gettingmy account balance: ${this.provider.account.id}`);
+        console.log(`fetching account balance: ${this.provider.account.id}`);
         try {
           const balance = await this.provider.getAccountBalance(this.provider.account!.id);
           useBalanceStore().setBalance(balance.hbars);

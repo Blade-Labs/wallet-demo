@@ -36,6 +36,7 @@
 
       <network-information />
       <form-call-contract />
+      <form-account-info />
 
     </div>
 
