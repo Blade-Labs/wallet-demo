@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useProviderStore } from "@/store/blade-provider";
+import { toHexBytes } from "@/utils/encode";
 import { AccountId, ContractExecuteTransaction,
         ContractId, ContractFunctionParameters,
         Hbar, HbarUnit} from "@hashgraph/sdk";
@@ -37,8 +38,6 @@ const contractIdString = computed({
 });
 const onSubmit = async ()=>{
 
-  console.log(`contract id: ${contractId.value}`);
-
   const tx =
       new ContractExecuteTransaction({
         amount:Hbar.from(amount.value! as BigNumber, HbarUnit.Hbar),
@@ -53,7 +52,10 @@ const onSubmit = async ()=>{
 
     tx.setNodeAccountIds([AccountId.fromString('0.0.3')]);
 
-  await useProviderStore().sendRequest( tx );
+  const result = await useProviderStore().sendRequest( tx );
+  const receipt = await useProviderStore().waitReceipt(result );
+
+  return `Contract receipt bytes:  ${toHexBytes(receipt.toBytes())}`;
 }
 
 /**

@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useProviderStore } from "@/store/blade-provider";
+import { toHexBytes } from "@/utils/encode";
 import { TransactionId } from "@hashgraph/sdk";
 
 const providerStore = useProviderStore();
@@ -27,7 +28,8 @@ const transactionIdString = computed({
 });
 
 const onSubmit = async ()=>{
-  await providerStore.provider!.getTransactionReceipt( transactionId.value! );
+  const result = await providerStore.provider!.getTransactionReceipt( transactionId.value! );
+  return `Receipt bytes: ${toHexBytes( result.toBytes() )}`;
 }
 
 const canSubmit = computed(()=>{
@@ -38,7 +40,7 @@ const canSubmit = computed(()=>{
 
 <template>
 <vue-form
-  name="form_send_hbar"
+  name="form_get_receipt"
   title="Get Transaction Receipt"
   :onSubmit="onSubmit"
   :canSubmit="canSubmit">
