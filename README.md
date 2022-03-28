@@ -2,10 +2,11 @@
 
 ## Prerequisites
 
-
 - [node](https://nodejs.org/) v16+
 
 - [pnpm](https://pnpm.io/)
+
+- [Latest Blade Wallet Build](https://github.com/Blade-Labs/wallet-web#installation-of-browser-extension)
 
 ## Development
 
@@ -20,6 +21,8 @@ Run `vite` have a hot-reloaded application.
 ```bash
 pnpm dev
 ```
+
+**Note:** Once you have the localhost server running, you should be able to connect to the Blade Wallet installed from the GitHub or Chrome Store. In some cases, the Blade Wallet from the Chrome Store will be outdated and may not work so please use the latest build from the GitHub repository mentioned in the prerequisites above.
 
 ## Production
 
