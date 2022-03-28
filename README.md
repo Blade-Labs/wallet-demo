@@ -1,4 +1,5 @@
-# blade-wallet-demo-app
+# Blade Wallet Demo
+This is a demo app that runs locally for testing your DApp integration with the Blade Wallet API.
 
 ## Prerequisites
 
