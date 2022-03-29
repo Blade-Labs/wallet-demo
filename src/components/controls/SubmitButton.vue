@@ -16,7 +16,7 @@ const props = defineProps<{
     box-content hover:box-content
     rounded-xl h-10 max-h-10 px-4.5 min-w-button-md
     disabled:opacity-20 transition-all
-   hover:brightness-75
+    hover:brightness-75
    text-white text-xs text-center font-bold uppercase">
    <spinner-small v-if="busy" />
    <slot v-else></slot>

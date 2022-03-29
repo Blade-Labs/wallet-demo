@@ -1,4 +1,4 @@
-import { Client, AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt } from '@hashgraph/sdk';
+import { AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
 import { BladeNetworkProvider, HederaNetwork } from '../api/blade';
 import BigNumber from 'bignumber.js';
@@ -34,7 +34,7 @@ export const useProviderStore = defineStore('provider-store', {
 
       try {
 
-        console.log(`bladeProvider: try create Session...`);
+        console.log(`bladeProvider: Creating Session...`);
         this.provider?.on('connect', this.onSession);
         await this.provider?.createSession(HederaNetwork.Testnet);
         console.log(`Session ready.`);

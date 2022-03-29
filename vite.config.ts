@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import icons from "unplugin-icons/vite";
 import html from "vite-plugin-html";
 import { resolve } from 'path'
 import iconsResolver from 'unplugin-icons/resolver'
@@ -69,8 +68,7 @@ export default async function ({ mode, command }) {
 
     build: {
 
-
-      rollupOptions: {
+      /*rollupOptions: {
 
         output: {
           manualChunks(id) {
@@ -82,7 +80,7 @@ export default async function ({ mode, command }) {
             }
           }
         },
-      }
+      }*/
     },
 
     plugins: [
@@ -106,13 +104,7 @@ export default async function ({ mode, command }) {
       components({
         dirs: [resolve(__dirname, 'src/components'), resolve(__dirname, 'src/views')],
         dts: resolve(__dirname, 'src/components.d.ts'),
-        resolvers: [
-          // <i-.. will auto-import icons from unplugin-icons
-          iconsResolver()
-        ]
       }),
-      ,
-      icons(),
     ],
 
     optimizeDeps: {
@@ -126,13 +118,19 @@ export default async function ({ mode, command }) {
       ]
     },
 
+    preview: {
+      port: 3001,
+      cors: true,
+      https: true,
+    },
+
 
     server: {
       port: 3001,
       cors: true,
-      https: false,
+      https: true,
       hmr: {
-        host: process.env.DEV_HOST ?? 'localhost',
+        host: 'localhost',
       },
       watch: {
         ignored: [

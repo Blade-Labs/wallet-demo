@@ -43,7 +43,6 @@ const onChanged = (e: Event) => {
       :value="modelValue?.toString() ?? new BigNumber(0)"
       :placeholder="placeholder"
       @change="onChanged"
-
       :id="elmId('amountField')"
       :step="step"
       name="amount"

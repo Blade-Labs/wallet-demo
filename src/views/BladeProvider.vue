@@ -1,10 +1,6 @@
 <script setup lang="ts">
 
   import { useProviderStore } from '@/store/blade-provider';
-  import { AccountId, ContractExecuteTransaction, Hbar, HbarUnit} from '@hashgraph/sdk';
-  import { BladeConnector, BladeConnectorAccount, HederaNetwork } from '../api/blade';
-
-  const testContractId:string = '0.0.01';
 
   const providerStore = useProviderStore();
 

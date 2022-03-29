@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { AccountId, TransactionReceipt } from "@hashgraph/sdk";
+import { AccountId } from "@hashgraph/sdk";
 import { BigNumber } from "bignumber.js";
 import { useProviderStore } from '../../store/blade-provider';
 import { toHexBytes } from '../../utils/encode';
