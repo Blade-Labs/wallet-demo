@@ -10,4 +10,5 @@ WORKDIR /home/node/wallet-demo
 RUN npm -g i pnpm
 COPY --chown=node:node --from=builder /home/node/wallet-demo/ /home/node/wallet-demo/
 USER node
+EXPOSE 3001
 CMD ["pnpm", "serve"]
