@@ -21,7 +21,7 @@ export const useDemoStore = defineStore('demo-store', {
      */
     load() {
 
-      if (window.walletProvider) {
+      if (window.walletProvider != null) {
         console.log(`walletProvided found`);
         this.onLoaded();
       } else {
@@ -32,7 +32,7 @@ export const useDemoStore = defineStore('demo-store', {
 
     onLoaded() {
 
-      if (window.walletProvider) {
+      if (window.walletProvider != null) {
         this.bladeLoaded = true;
         this.providerNotFound = false;
         useProviderStore().setProvider(window.walletProvider);

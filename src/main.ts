@@ -1,8 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
-import "@fontsource/source-sans-pro/latin-400.css"
-import "@fontsource/source-sans-pro/latin-700.css"
 import "@fontsource/montserrat/latin-400.css"
 import "@fontsource/montserrat/latin-500.css"
 import "@fontsource/montserrat/latin-600.css"

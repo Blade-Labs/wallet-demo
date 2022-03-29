@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import { useProviderStore } from "@/store/blade-provider";
-import { LedgerId } from '@hashgraph/sdk';
 
 
 const providerStore = useProviderStore();
