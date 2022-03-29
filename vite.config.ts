@@ -121,7 +121,7 @@ export default async function ({ mode, command }) {
     preview: {
       port: 3001,
       cors: true,
-      https: true,
+      https: false,
     },
 
 
