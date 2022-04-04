@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useProviderStore } from "@/store/blade-provider";
+import { useBladeStore } from "@/store/blade-connect";
 import { toHexBytes } from "@/utils/encode";
 import { AccountId, ContractExecuteTransaction,
         ContractId, ContractFunctionParameters,
@@ -52,8 +52,8 @@ const onSubmit = async ()=>{
 
     tx.setNodeAccountIds([AccountId.fromString('0.0.3')]);
 
-  const result = await useProviderStore().sendRequest( tx );
-  const receipt = await useProviderStore().waitReceipt(result );
+  const result = await useBladeStore().sendRequest( tx );
+  const receipt = await useBladeStore().waitReceipt(result );
 
   return `Contract receipt bytes:  ${toHexBytes(receipt.toBytes())}`;
 }

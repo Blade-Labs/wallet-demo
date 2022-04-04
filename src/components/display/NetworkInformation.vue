@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
-import { useProviderStore } from "@/store/blade-provider";
+import { useBladeStore } from "@/store/blade-connect";
 
 
-const providerStore = useProviderStore();
+const bladeStore = useBladeStore();
 
 const ledgerIdString = computed(()=>{
 
-  const ledgerId = providerStore.provider?.getLedgerId();
+  const ledgerId = bladeStore.provider?.getLedgerId();
   if ( ledgerId) {
 
     return `${ledgerId.toString()}`
@@ -19,13 +19,13 @@ const ledgerIdString = computed(()=>{
 
 const network = computed(()=>{
 
-  return providerStore.provider?.getNetwork();
+  return bladeStore.provider?.getNetwork();
 
 });
 
 const mirrorNetwork = computed(()=>{
 
-  return providerStore.provider?.getMirrorNetwork();
+  return bladeStore.provider?.getMirrorNetwork();
 
 });
 

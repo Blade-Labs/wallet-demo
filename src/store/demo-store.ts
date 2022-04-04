@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
-import { useProviderStore } from './blade-provider';
+import { useBladeStore } from './blade-connect';
 import { walletLoadedEvent } from '../api/blade';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
-  providerNotFound: boolean,
+  bladeNotFound: boolean,
 }
 
 export const useDemoStore = defineStore('demo-store', {
 
   state: (): DemoStoreState => ({
     bladeLoaded: false,
-    providerNotFound: false
+    bladeNotFound: false
   }),
 
   actions: {
@@ -21,7 +21,7 @@ export const useDemoStore = defineStore('demo-store', {
      */
     load() {
 
-      if (window.walletProvider != null) {
+      if (window.bladeConnect != null) {
         console.log(`walletProvided found`);
         this.onLoaded();
       } else {
@@ -45,14 +45,14 @@ export const useDemoStore = defineStore('demo-store', {
 
     onLoaded() {
 
-      if (window.walletProvider != null) {
+      if (window.bladeConnect != null) {
         this.bladeLoaded = true;
-        this.providerNotFound = false;
-        useProviderStore().setProvider(window.walletProvider);
+        this.bladeNotFound = false;
+        useBladeStore().setSession(window.bladeConnect);
       } else {
         console.log(`wallet not found`);
         this.bladeLoaded = false;
-        this.providerNotFound = true;
+        this.bladeNotFound = true;
       }
 
     },

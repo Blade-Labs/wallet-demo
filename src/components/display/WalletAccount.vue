@@ -1,17 +1,23 @@
 
 <script setup lang="ts">
-import { useProviderStore } from '@/store/blade-provider';
+import { AccountId, Wallet } from '@hashgraph/sdk';
+
+import { useBladeStore } from '@/store/blade-connect';
 import { BladeConnectorAccount } from '../../api/blade';
 
 const props = defineProps<{
-  account:BladeConnectorAccount
+  wallet:Wallet
 }>();
 
-  const endSession = async()=>{
-    console.log(`ending session.`);
-    return useProviderStore().closeSession();
-  }
 
+const network = computed(()=>{
+
+  return props.wallet.getLedgerId()?.toString()
+});
+
+const endSession = async()=>{
+  return useBladeStore().killSession();
+}
 
 </script>
 
@@ -20,13 +26,13 @@ const props = defineProps<{
             collapsible
             :open="false">
   <div class="flex flex-col space-y-2">
-    <div class="flex justify-between"><div>Network:</div><div>{{account?.network}}</div></div>
+    <div class="flex justify-between"><div>Network:</div><div>{{network}}</div></div>
     <div class="flex justify-between">
-      <div>Account ID:</div><div>{{account?.id ?? 'No id'}}</div>
+      <div>Account ID:</div><div>{{ wallet.getAccountId() ?? 'No id'}}</div>
     </div>
     <div>
       <div>Public Key:</div>
-      <div class="break-words"><span>{{account?.publicKey}}</span></div>
+      <div class="break-words"><span>{{ wallet.getAccountKey()}}</span></div>
     </div>
   </div>
   <wallet-balance class="my-4" />

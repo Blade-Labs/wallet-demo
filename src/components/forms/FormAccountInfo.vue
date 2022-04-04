@@ -1,8 +1,8 @@
 <script setup lang='ts'>
-import { useProviderStore } from "@/store/blade-provider";
+import { useBladeStore } from "@/store/blade-connect";
 import { AccountId } from "@hashgraph/sdk";
 
-const providerStore = useProviderStore();
+const bladeStore = useBladeStore();
 const accountId = ref<AccountId|null>();
 
 let _accountIdString:string = '';
@@ -27,7 +27,7 @@ const accountIdString = computed({
 });
 
 const onSubmit = async ()=>{
-  const result = await providerStore.provider!.getAccountInfo( accountId.value! );
+  const result = await bladeStore.wallet!.getProvider().getAccountInfo( accountId.value! );
   return `Account Balance: ${result.balance} Owned Nfts: ${result.ownedNfts}`;
 }
 
