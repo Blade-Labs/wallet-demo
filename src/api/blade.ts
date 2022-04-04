@@ -1,13 +1,12 @@
 
 declare global {
   interface Window {
-    wallet: BladeConnector,
-    walletProvider?: BladeNetworkProvider
+    bladeConnect?: BladeInterface
   }
 }
 
 
-import { AccountId, AccountBalance, TransactionId, TransactionResponse, TransactionReceipt, AccountInfo, LedgerId, Query, Transaction } from '@hashgraph/sdk';
+import { Query, Transaction, Wallet } from '@hashgraph/sdk';
 
 export const walletLoadedEvent = 'hederaWalletLoaded';
 
@@ -24,37 +23,16 @@ export type BladeConnectorAccount = {
   network: string
 }
 
+export type BladeInterface = {
 
-export type BladeNetworkProvider = {
-  account?: BladeConnectorAccount | null | undefined;
-  createSession(network?: HederaNetwork): Promise<BladeConnectorAccount>;
-  closeSession(): Promise<boolean>;
-  signTransaction(transaction: Transaction): Promise<string>;
-  getTransactionReceipt(transactionId: TransactionId): Promise<TransactionReceipt>;
-  waitForReceipt(response: TransactionResponse): Promise<TransactionReceipt>;
-  sendRequest<ResponseT = TransactionResponse>(request: Executable<ResponseT>): Promise<ResponseT | TransactionResponse>;
+  createSession(network?: HederaNetwork): Promise<Wallet>;
+  killSession(): Promise<boolean>;
 
-  getAccountBalance(accountId: AccountId | string): Promise<AccountBalance>;
-  getAccountInfo(accountId: AccountId | string): Promise<AccountInfo>;
-  sendTransaction(transaction: Transaction): Promise<TransactionResponse>;
-  getLedgerId(): LedgerId | null;
-  getMirrorNetwork(): Array<string>;
-  getNetwork(): { [key: string]: string | AccountId };
+  get hasSession(): boolean;
+  getActiveWallet(): Wallet | null;
 
-  on(eventName: 'connect', listener: (account: BladeConnectorAccount) => void): BladeNetworkProvider;
-  on(eventName: 'disconnect', listener: () => void): BladeNetworkProvider;
+  addAccount(network: HederaNetwork, id: string, privateKey: string, metadata: string | null): Promise<Wallet>;
 
 }
 
-export type BladeConnector = {
-
-  account?: BladeConnectorAccount | null,
-  login(network?: HederaNetwork): Promise<BladeConnectorAccount>,
-  logout(): Promise<void>,
-  addAccount(network: HederaNetwork,
-    id: string,
-    privateKey: string,
-    metadata: string | null): Promise<BladeConnectorAccount>,
-  getTransactionSigner(abis?: []): Promise<(data: Buffer) => Promise<Buffer>>
-
-}
+export type BladeWalletInterface = Wallet;
