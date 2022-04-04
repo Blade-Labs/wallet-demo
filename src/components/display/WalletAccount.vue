@@ -1,9 +1,8 @@
 
 <script setup lang="ts">
-import { AccountId, Wallet } from '@hashgraph/sdk';
+import { Wallet } from '@hashgraph/sdk';
 
 import { useBladeStore } from '@/store/blade-connect';
-import { BladeConnectorAccount } from '../../api/blade';
 
 const props = defineProps<{
   wallet:Wallet

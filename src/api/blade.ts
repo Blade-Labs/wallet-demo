@@ -17,12 +17,6 @@ export enum HederaNetwork {
   Testnet = "Testnet"
 }
 
-export type BladeConnectorAccount = {
-  id: string,
-  publicKey: string,
-  network: string
-}
-
 export type BladeInterface = {
 
   createSession(network?: HederaNetwork): Promise<Wallet>;
