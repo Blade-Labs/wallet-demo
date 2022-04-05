@@ -31,6 +31,7 @@ declare function elmId(name: string): string;
       class="bg-insigniaWhite rounded-lg border-none
        max-w-text-input
        disabled:opacity-50"
+      @input="emit('update:modelValue', $event.target.value )"
       @change="emit('update:modelValue', $event.target.value )"
       :required="required"
       :value="modelValue"

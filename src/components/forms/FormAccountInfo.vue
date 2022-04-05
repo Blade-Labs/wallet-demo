@@ -44,8 +44,8 @@ const canSubmit = computed(()=>{
   :onSubmit="onSubmit"
   :canSubmit="canSubmit">
 
-    <text-box label="Transaction Id"
-      v-model="transactionIdString" />
+    <text-box label="Account Id"
+      v-model="accountIdString" />
 
   </vue-form>
 </template>

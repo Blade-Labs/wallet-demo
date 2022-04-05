@@ -38,9 +38,9 @@ const onSubmit = async ()=>{
     const receipt = await providerStore.waitReceipt(result!);
     //resultMessage.value = `Transaction receipt: ${receipt.scheduleId}`;
 
-    return `Transaction status: ${receipt.status} Receipt bytes: ${ toHexBytes( receipt.toBytes() )}`;
-  
-
+    return `Transaction id: ${result?.transactionId}\n`+
+    `Transaction status: ${receipt.status}\n`+
+    `Receipt bytes: ${ toHexBytes( receipt.toBytes() )}`;
 
 }
 
