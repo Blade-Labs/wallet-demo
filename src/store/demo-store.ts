@@ -26,6 +26,19 @@ export const useDemoStore = defineStore('demo-store', {
         this.onLoaded();
       } else {
         document.addEventListener(walletLoadedEvent, this.onLoaded);
+        setTimeout(() => this.walletTimeout(), 500);
+
+      }
+
+    },
+
+    /**
+     * Wallet does not appear to exist.
+     */
+    walletTimeout() {
+
+      if (!this.bladeLoaded) {
+        this.providerNotFound = true;
       }
 
     },
