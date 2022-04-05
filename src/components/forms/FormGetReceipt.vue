@@ -18,7 +18,9 @@ const transactionIdString = computed({
     try {
 
       transactionId.value = TransactionId.fromString(v);
+
     } catch (err){
+      console.log(`invalid transaction id: ${err}`);
       transactionId.value = null;
     }
 
