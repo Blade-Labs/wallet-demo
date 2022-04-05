@@ -41,8 +41,8 @@ const trySubmit = async ()=>{
 
     if ( ('code' in err) && err.code == ErrorCodes.NO_SIGNATURE ) {
       // User cancelled. No real error.
-    } else if ( err instanceof Error ) {
-        errorMessage.value = err.message;
+    } else if ( 'message' in err) {
+      errorMessage.value = `${err.message}`;
     } else {
       errorMessage.value= `${err}`;
     }
