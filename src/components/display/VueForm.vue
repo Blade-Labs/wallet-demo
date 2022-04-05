@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+import { ErrorCodes } from "@/model/errors";
 
 const props = defineProps<{
   title?:string,
@@ -33,11 +34,20 @@ const trySubmit = async ()=>{
 
     messageResult.value = `${result}`;
 
-  } catch (err){
+  } catch (err:any){
+
 
     messageResult.value = undefined;
-    errorMessage.value= `${err}`;
-  }finally {
+
+    if ( ('code' in err) && err.code == ErrorCodes.NO_SIGNATURE ) {
+      // User cancelled. No real error.
+    } else if ( err instanceof Error ) {
+        errorMessage.value = err.message;
+    } else {
+      errorMessage.value= `${err}`;
+    }
+
+  } finally {
     busy.value=false;
   }
 
