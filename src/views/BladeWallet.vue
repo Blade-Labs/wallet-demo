@@ -6,7 +6,6 @@
 
   const createSession = async()=>{
     console.log(`trying to create session.`);
-    return bladeStore.createSession();
   }
 
 </script>

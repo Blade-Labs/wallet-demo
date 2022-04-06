@@ -20,6 +20,7 @@ export const useBladeStore = defineStore('blade-store', {
     setWallet(wallet?: Wallet | null) {
 
       this.wallet = wallet;
+      this.hasSession = this.wallet != null;
 
     },
 

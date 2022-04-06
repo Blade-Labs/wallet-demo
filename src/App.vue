@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
   import { useDemoStore } from './store/demo-store';
-
-  console.log(`App.vue setup()`);
   
   const demoStore = useDemoStore();
   demoStore.load();
@@ -20,8 +18,8 @@
         p-10">
 
 
-      <blade-provider v-if="demoStore.bladeLoaded" />
-      <div v-else-if="demoStore.providerNotFound">
+      <blade-wallet v-if="demoStore.bladeLoaded" />
+      <div v-else-if="demoStore.bladeNotFound">
         
         <div>
           Install

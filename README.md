@@ -67,13 +67,13 @@ Wallet uses the [Hedera Wallet Interface](https://hips.hedera.com/hip/hip-338)
 Install dependencies.
 
 ```bash
-pnpm i
+npm i
 ```
 
 Run `vite` have a hot-reloaded application.
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 **Note:** Once you have the localhost server running, you should be able to connect to the Blade Wallet installed from the GitHub or Chrome Store. In some cases, the Blade Wallet from the Chrome Store will be outdated and may not work so please use the latest build from the GitHub repository mentioned in the prerequisites above.
@@ -83,7 +83,7 @@ pnpm dev
 Run `vite build` to build and minify the application.
 
 ```bash
-pnpm build
+npm build
 ```
 
 Note: App must be run in https mode to access Blade Wallet Extension.

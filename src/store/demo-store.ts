@@ -19,15 +19,17 @@ export const useDemoStore = defineStore('demo-store', {
     /**
      * Listen for hederaWalletLoaded event from Blade extension.
      */
-    load() {
+    async load() {
 
       console.log(`attempting blade wallet load...`);
       try {
 
         const wallet = new BladeWallet();
-        useBladeStore().setWallet(wallet);
+        await wallet.connect();
 
-        console.log('blade wallet loaded...');
+        useBladeStore().setWallet(wallet);
+        this.bladeLoaded = true;
+        this.bladeNotFound = false;
 
       } catch (err) {
 
@@ -46,6 +48,7 @@ export const useDemoStore = defineStore('demo-store', {
 
         } else {
           console.error(err);
+          this.bladeNotFound = true;
         }
 
       }
