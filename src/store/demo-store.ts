@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { useBladeStore } from './blade-connect';
-import { walletLoadedEvent } from '../api/blade';
+import { useBladeStore } from './blade-wallet';
+import { BladeWallet, BladeWalletError } from 'bladeconnect';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
@@ -21,41 +21,36 @@ export const useDemoStore = defineStore('demo-store', {
      */
     load() {
 
-      if (window.bladeConnect != null) {
-        console.log(`walletProvided found`);
-        this.onLoaded();
-      } else {
-        document.addEventListener(walletLoadedEvent, this.onLoaded);
-        setTimeout(() => this.walletTimeout(), 500);
+      console.log(`attempting blade wallet load...`);
+      try {
+
+        const wallet = new BladeWallet();
+        useBladeStore().setWallet(wallet);
+
+        console.log('blade wallet loaded...');
+
+      } catch (err) {
+
+        if (err instanceof Error) {
+
+          if (err.name === BladeWalletError.ExtensionNotFound) {
+
+            console.log(`blade extension not found.`);
+            this.bladeNotFound = true;
+            // recheck for blade extension.
+            setTimeout(() => this.load(), 500);
+
+          } else if (err.name === BladeWalletError.NoSession) {
+            console.warn(`No active blade session.`);
+          }
+
+        } else {
+          console.error(err);
+        }
 
       }
 
-    },
-
-    /**
-     * Wallet does not appear to exist.
-     */
-    walletTimeout() {
-
-      if (!this.bladeLoaded) {
-        this.providerNotFound = true;
-      }
-
-    },
-
-    onLoaded() {
-
-      if (window.bladeConnect != null) {
-        this.bladeLoaded = true;
-        this.bladeNotFound = false;
-        useBladeStore().setSession(window.bladeConnect);
-      } else {
-        console.log(`wallet not found`);
-        this.bladeLoaded = false;
-        this.bladeNotFound = true;
-      }
-
-    },
+    }
 
   },
 

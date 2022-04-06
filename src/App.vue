@@ -2,6 +2,8 @@
 
   import { useDemoStore } from './store/demo-store';
 
+  console.log(`App.vue setup()`);
+  
   const demoStore = useDemoStore();
   demoStore.load();
 

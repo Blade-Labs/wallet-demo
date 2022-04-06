@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { Wallet } from '@hashgraph/sdk';
 
-import { useBladeStore } from '@/store/blade-connect';
+import { useBladeStore } from '@/store/blade-wallet';
 
 const props = defineProps<{
   wallet:Wallet
@@ -13,10 +13,6 @@ const network = computed(()=>{
 
   return props.wallet.getLedgerId()?.toString()
 });
-
-const endSession = async()=>{
-  return useBladeStore().killSession();
-}
 
 </script>
 

@@ -7,7 +7,6 @@ declare module 'vue' {
     AccountField: typeof import('./components/controls/AccountField.vue')['default']
     ActionButton: typeof import('./components/controls/ActionButton.vue')['default']
     BladeConnect: typeof import('./views/BladeConnect.vue')['default']
-    BladeProvider: typeof import('./views/BladeProvider.vue')['default']
     ButtonOutlined: typeof import('./components/controls/ButtonOutlined.vue')['default']
     CircleButton: typeof import('./components/controls/CircleButton.vue')['default']
     ContractParameters: typeof import('./components/controls/ContractParameters.vue')['default']

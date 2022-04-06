@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { AccountId } from "@hashgraph/sdk";
 import { BigNumber } from "bignumber.js";
-import { useBladeStore } from '../../store/blade-connect';
+import { useBladeStore } from '../../store/blade-wallet';
 import { toHexBytes } from '../../utils/encode';
 
 const bladeStore = useBladeStore();

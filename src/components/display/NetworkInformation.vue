@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { useBladeStore } from "@/store/blade-connect";
+import { useBladeStore } from "@/store/blade-wallet";
 
 
 const bladeStore = useBladeStore();

@@ -1,65 +1,26 @@
-import { AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt, Provider } from '@hashgraph/sdk';
+import { AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt, Provider, Wallet } from '@hashgraph/sdk';
 import { defineStore } from 'pinia';
-import { HederaNetwork, BladeInterface } from '../api/blade';
 import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
-import { useDemoStore } from './demo-store';
 
 type BladeStoreState = {
-  bladeConnect?: BladeInterface,
+  wallet?: Wallet | null,
   hasSession: boolean
 }
 
 export const useBladeStore = defineStore('blade-store', {
 
   state: (): BladeStoreState => ({
-    bladeConnect: window.bladeConnect,
+    wallet: null,
     hasSession: false
   }),
 
   actions: {
 
-    setSession(session?: BladeInterface) {
+    setWallet(wallet?: Wallet | null) {
 
-      this.bladeConnect = session;
-      if (session != null) {
-        this.createSession();
-      } else {
-        useDemoStore().bladeLoaded = false;
-      }
+      this.wallet = wallet;
 
-    },
-
-    async createSession() {
-
-      try {
-
-        console.log(`bladeConnect: Creating Session...`);
-        await this.bladeConnect?.createSession(HederaNetwork.Testnet);
-        console.log(`Session ready.`);
-        this.hasSession = true;
-        this.fetchMyBalance();
-
-      } catch (err) {
-        this.hasSession = false;
-        console.log(`start session failed: ${err}`);
-      }
-
-    },
-
-    async killSession() {
-      console.log(`blade: try close session...`);
-      const result = await this.bladeConnect?.killSession();
-      console.log(`close session result: ${result}`);
-      if (result) {
-        this.hasSession = false;
-      }
-      return result;
-    },
-
-    onSession() {
-      this.hasSession = true;
-      console.log(`Logged in using Blade Wallet Connector.`);
     },
 
     async getAccountBalance(accountId: AccountId | string) {
@@ -117,11 +78,11 @@ export const useBladeStore = defineStore('blade-store', {
 
       const myAccountId = this.accountId;
 
-      if (this.bladeConnect?.hasSession == true && myAccountId) {
+      if (this.wallet != null) {
 
         console.log(`fetching account balance: ${myAccountId}`);
         try {
-          const balance = await this.provider!.getAccountBalance(myAccountId);
+          const balance = await this.wallet.getAccountBalance();
           useBalanceStore().setBalance(balance.hbars);
         } catch (err) {
           console.warn(`$err`);
@@ -132,10 +93,6 @@ export const useBladeStore = defineStore('blade-store', {
 
   },
   getters: {
-
-    wallet: (state) => {
-      return state.bladeConnect?.getActiveWallet();
-    },
 
     provider(): Provider | undefined {
       return this.wallet?.getProvider();

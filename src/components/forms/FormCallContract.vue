@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useBladeStore } from "@/store/blade-connect";
+import { useBladeStore } from "@/store/blade-wallet";
 import { toHexBytes } from "@/utils/encode";
 import { AccountId, ContractExecuteTransaction,
         ContractId, ContractFunctionParameters,
