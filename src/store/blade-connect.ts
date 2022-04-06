@@ -5,14 +5,14 @@ import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
 import { useDemoStore } from './demo-store';
 
-type bladeStoreState = {
+type BladeStoreState = {
   bladeConnect?: BladeInterface,
   hasSession: boolean
 }
 
 export const useBladeStore = defineStore('blade-store', {
 
-  state: (): bladeStoreState => ({
+  state: (): BladeStoreState => ({
     bladeConnect: window.bladeConnect,
     hasSession: false
   }),
