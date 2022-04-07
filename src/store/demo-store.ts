@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useBladeStore } from './blade-wallet';
-import { BladeWallet, BladeWalletError } from 'bladeconnect';
+import { BladeWallet, BladeWalletError } from '@bladelabs/bladeconnect';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
@@ -25,7 +25,7 @@ export const useDemoStore = defineStore('demo-store', {
       try {
 
         const wallet = new BladeWallet();
-        await wallet.connect();
+        await wallet.createSession();
 
         useBladeStore().setWallet(wallet);
         this.bladeLoaded = true;

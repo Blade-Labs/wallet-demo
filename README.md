@@ -11,27 +11,37 @@ This is a demo app that runs locally for testing your DApp integration with the 
 
 - [Latest Blade Wallet Build](https://github.com/Blade-Labs/wallet-web#installation-of-browser-extension)
 
-
 ## Using Blade Connect interface
 For example usage and testing the below APIs using a Demo App, please go here and setup the app locally: [Demo App](https://github.com/Blade-Labs/wallet-demo)
 
-Listen for **hederaWalletLoaded** event for the **BladeConnect** object to be available.
-**BladeConnect** interface is accessible as: `window.bladeConnect`
-
-| API | Description |
-| :--- | :--- |
-| `bladeConnect.createSession(network:string)` | Create session with Blade wallet extension. |
-| `bladeConnect.killSession()` | End current session. walletProvider functions will no longer be available until new session is started. |
-| `bladeConnect.getActiveWallet()` | Returns the **Wallet** being used for transactions and signing. |
-| `bladeConnect.hasSession` | Whether there is an active wallet session. |
-| `bladeConnect.addAccount(network:string, id:string, privateKey:string)` | Requests that the user add a specific account to their wallet. This is a utility for account creation processes. |
-
-| ⚠ Note: Sessions persist between page reloads. When the page first loads you can check `bladeConnect.hasWallet` to see if there is a session is already active. |
-| :--- |
-
-
 Wallet provided by bladeConnect.getActiveWallet()
 Wallet uses the [Hedera Wallet Interface](https://hips.hedera.com/hip/hip-338)
+
+Install `bladeconnect` npm package:
+
+`npm install --save @bladelabs/bladeconnect`
+
+Create new wallet Object:
+
+```
+import { BladeWallet } from '@bladelabs/bladeconnect';
+
+async function loadWallet() {
+
+  try {
+
+    const wallet = new BladeWallet();
+    await wallet.createSession();
+
+    /// Blade Wallet is now ready to use.
+
+  } catch (err ){
+    console.error(err);
+  }
+
+}
+
+```
 
 
 | API | Description |
