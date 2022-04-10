@@ -2,8 +2,6 @@
 <script setup lang="ts">
 import { Wallet } from '@hashgraph/sdk';
 
-import { useBladeStore } from '@/store/blade-wallet';
-
 const props = defineProps<{
   wallet:Wallet
 }>();

@@ -30,7 +30,7 @@ const transactionIdString = computed({
 });
 
 const onSubmit = async ()=>{
-  const result = await bladeStore.wallet!.getProvider().getTransactionReceipt( transactionId.value! );
+  const result = await bladeStore.getTransactionReceipt( transactionId.value! );
   return `Receipt bytes: ${toHexBytes( result.toBytes() )}`;
 }
 

@@ -35,7 +35,7 @@ const onSubmit = async ()=>{
     const result = await bladeStore.sendTransfer(
       {accountId:toAccount.value!, amount:amount.value!});
 
-    const receipt = await bladeStore.waitReceipt(result!);
+    const receipt = await bladeStore.getTransactionReceipt(result!.transactionId);
     //resultMessage.value = `Transaction receipt: ${receipt.scheduleId}`;
 
     return `Transaction id: ${result?.transactionId}\n`+

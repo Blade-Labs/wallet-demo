@@ -53,7 +53,7 @@ const onSubmit = async ()=>{
     tx.setNodeAccountIds([AccountId.fromString('0.0.3')]);
 
   const result = await useBladeStore().sendRequest( tx );
-  const receipt = await useBladeStore().waitReceipt(result );
+  const receipt = await useBladeStore().getTransactionReceipt(result.transactionId );
 
   return `Contract receipt bytes:  ${toHexBytes(receipt.toBytes())}`;
 }

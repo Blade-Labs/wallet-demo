@@ -7,7 +7,7 @@ const bladeStore = useBladeStore();
 
 const ledgerIdString = computed(()=>{
 
-  const ledgerId = bladeStore.provider?.getLedgerId();
+  const ledgerId = bladeStore.getLedgerId();
   if ( ledgerId) {
 
     return `${ledgerId.toString()}`
@@ -19,13 +19,13 @@ const ledgerIdString = computed(()=>{
 
 const network = computed(()=>{
 
-  return bladeStore.provider?.getNetwork();
+  return bladeStore.getNetwork();
 
 });
 
 const mirrorNetwork = computed(()=>{
 
-  return bladeStore.provider?.getMirrorNetwork();
+  return bladeStore.getMirrorNetwork();
 
 });
 

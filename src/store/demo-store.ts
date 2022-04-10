@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useBladeStore } from './blade-wallet';
-import { BladeWallet, BladeWalletError } from '@bladelabs/bladeconnect';
+import { BladeSigner, BladeWalletError } from '@bladelabs/bladeconnect';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
@@ -24,10 +24,10 @@ export const useDemoStore = defineStore('demo-store', {
       console.log(`attempting blade wallet load...`);
       try {
 
-        const wallet = new BladeWallet();
-        await wallet.createSession();
+        const signer = new BladeSigner();
+        await signer.createSession();
 
-        useBladeStore().setWallet(wallet);
+        useBladeStore().setSigner(signer);
         this.bladeLoaded = true;
         this.bladeNotFound = false;
 

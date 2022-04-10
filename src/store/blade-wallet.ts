@@ -1,53 +1,69 @@
-import { AccountId, TransferTransaction, Transaction, TransactionResponse, TransactionReceipt, Provider, Wallet } from '@hashgraph/sdk';
+import type { AccountId, Transaction, TransactionResponse, TransactionReceipt, Provider, Signer, Executable } from '@hashgraph/sdk';
+import { TransactionReceiptQuery, TransferTransaction, TransactionId, AccountInfoQuery } from '@hashgraph/sdk';
+
 import { defineStore } from 'pinia';
 import BigNumber from 'bignumber.js';
 import { useBalanceStore } from './balance-store';
 
 type BladeStoreState = {
-  wallet?: Wallet | null,
+  signer?: Signer | null,
   hasSession: boolean
 }
 
 export const useBladeStore = defineStore('blade-store', {
 
   state: (): BladeStoreState => ({
-    wallet: null,
+    signer: null,
     hasSession: false
   }),
 
   actions: {
 
-    setWallet(wallet?: Wallet | null) {
+    setSigner(signer?: Signer | null) {
 
-      this.wallet = wallet;
-      this.hasSession = this.wallet != null;
+      this.signer = signer;
+      this.hasSession = this.signer != null;
 
     },
 
-    async getAccountBalance(accountId: AccountId | string) {
+    async getAccountBalance() {
 
-      return this.wallet?.getProvider().getAccountBalance(accountId);
+      return this.signer?.getAccountBalance();
 
     },
 
     async getAccountInfo(accountId: AccountId | string) {
 
-      return this.wallet?.getProvider().getAccountInfo(accountId);
+      return this.sendRequest(new AccountInfoQuery({ accountId }));
 
     },
 
-    async sendRequest(request: Transaction) {
+    async getTransactionReceipt(transactionId: TransactionId | string) {
 
-      return this.wallet!.sendRequest(request);
+      return this.sendRequest(new TransactionReceiptQuery({ transactionId: transactionId }));
+
+
     },
 
-    async waitReceipt(response: TransactionResponse): Promise<TransactionReceipt> {
-      return this.wallet!.getProvider().waitForReceipt(response);
+    getLedgerId() {
+      return this.signer!.getLedgerId();
+    },
+
+    getNetwork() {
+      return this.signer!.getNetwork();
+    },
+
+    getMirrorNetwork() {
+      return this.signer!.getMirrorNetwork();
+    },
+
+    async sendRequest<RequestT, ResponseT, OutputT>(request: Executable<RequestT, ResponseT, OutputT>) {
+      return this.signer!.sendRequest(request);
     },
 
     async requestSign(transaction: Transaction) {
 
-      return await this.wallet?.signTransaction(transaction);
+      return await this.signer?.signTransaction(transaction);
 
     },
 
@@ -67,8 +83,8 @@ export const useBladeStore = defineStore('blade-store', {
 
       );
 
-      const result = await this.wallet!.sendRequest(transaction);
-      await this.wallet?.getProvider().waitForReceipt(result!);
+      const result = await this.signer!.sendRequest(transaction);
+
       this.fetchMyBalance();
 
       return result;
@@ -79,11 +95,11 @@ export const useBladeStore = defineStore('blade-store', {
 
       const myAccountId = this.accountId;
 
-      if (this.wallet != null) {
+      if (this.signer != null) {
 
         console.log(`fetching account balance: ${myAccountId}`);
         try {
-          const balance = await this.wallet.getAccountBalance();
+          const balance = await this.signer.getAccountBalance();
           useBalanceStore().setBalance(balance.hbars);
         } catch (err) {
           console.warn(`$err`);
@@ -95,12 +111,8 @@ export const useBladeStore = defineStore('blade-store', {
   },
   getters: {
 
-    provider(): Provider | undefined {
-      return this.wallet?.getProvider();
-    },
-
     accountId(): AccountId | null {
-      return this.wallet?.getAccountId() ?? null;
+      return this.signer?.getAccountId() ?? null;
     }
   }
 
