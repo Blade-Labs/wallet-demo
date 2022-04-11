@@ -25,8 +25,10 @@ export const useDemoStore = defineStore('demo-store', {
       try {
 
         const signer = new BladeSigner();
+
         await signer.createSession();
         useBladeStore().setSigner(signer);
+
         this.bladeLoaded = true;
         this.bladeNotFound = false;
 
@@ -39,7 +41,7 @@ export const useDemoStore = defineStore('demo-store', {
             console.log(`blade extension not found.`);
             this.bladeNotFound = true;
             // recheck for blade extension.
-            setTimeout(() => this.load(), 500);
+            setTimeout(() => this.load(), 1000);
 
           } else if (err.name === BladeWalletError.NoSession) {
             console.warn(`No active blade session.`);
@@ -52,6 +54,10 @@ export const useDemoStore = defineStore('demo-store', {
 
       }
 
+    },
+
+    setNotFound() {
+      this.bladeNotFound = true;
     }
 
   },
