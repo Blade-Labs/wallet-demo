@@ -7,7 +7,7 @@ import components from 'unplugin-vue-components/vite'
 import autoImport from 'unplugin-auto-import/vite'
 import dotenv from 'dotenv';
 
-import { accessSync } from 'fs';
+import { accessSync, readFileSync } from 'fs';
 
 const getPublicBase = () => {
 
@@ -81,6 +81,10 @@ export default async function ({ mode, command }) {
       ]
     },
 
+    define: {
+      "import.meta.env.blade_api_version": '"' + findPackageVersion('@bladelabs/blade-web3.js') + '"'
+    },
+
     plugins: [
 
       html({
@@ -139,4 +143,18 @@ export default async function ({ mode, command }) {
     }
 
   });
+}
+
+
+
+function findPackageVersion(name: string) {
+
+  try {
+    const contents = JSON.parse(readFileSync(process.env.npm_package_json).toString());
+
+    return contents.dependencies[name];
+  } catch (err) {
+    console.warn(`error reading blade version: ${err}`);
+  }
+
 }

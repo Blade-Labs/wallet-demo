@@ -9,14 +9,14 @@
 
 <template>
 
+<div class="flex flex-col items-stretch text-white bg-darkGrey">
+    <blade-title />
     <div class="flex flex-row w-full h-full bg-darkGrey
-        justify-items-stretch
-        items-stretch
-        text-white
-        text-sm
-        font-bold
-        p-10">
-
+      justify-items-stretch
+      items-stretch
+      text-sm
+      font-bold
+      px-10 pb-10">
 
       <blade-wallet v-if="demoStore.bladeLoaded" />
       <div v-else-if="demoStore.bladeNotFound">
@@ -34,4 +34,5 @@
 
     </div>
 
+</div>
 </template>
