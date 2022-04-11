@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useBladeStore } from './blade-signer';
-import { BladeSigner, BladeWalletError } from '@bladelabs/bladeconnect';
+import { BladeSigner, BladeWalletError } from '@bladelabs/blade-web3.js';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
