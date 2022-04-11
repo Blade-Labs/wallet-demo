@@ -58,8 +58,11 @@ export default async function ({ mode, command }) {
     isProduction ? "style-src 'self'" : "style-src 'self' 'unsafe-inline' 'unsafe-eval'",
   ];
 
+  const publicBasePath = process.env.PUBLIC_HOST_BASE ?? '/';
+  console.log(`Deploying to base: ${publicBasePath}`);
+
   return defineConfig({
-    base: process.env.PUBLIC_HOST_BASE ?? '/',
+    base: publicBasePath,
     resolve: {
       alias: [
         { find: /^@\//, replacement: `${resolve(__dirname, './src')}/` },
