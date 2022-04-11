@@ -1,15 +1,15 @@
 
 <script setup lang="ts">
-import { Wallet } from '@hashgraph/sdk';
+import type { Signer } from '@hashgraph/sdk';
 
 const props = defineProps<{
-  wallet:Wallet
+  signer:Signer
 }>();
 
 
 const network = computed(()=>{
 
-  return props.wallet.getLedgerId()?.toString()
+  return props.signer.getLedgerId()?.toString()
 });
 
 </script>
@@ -21,11 +21,7 @@ const network = computed(()=>{
   <div class="flex flex-col space-y-2">
     <div class="flex justify-between"><div>Network:</div><div>{{network}}</div></div>
     <div class="flex justify-between">
-      <div>Account ID:</div><div>{{ wallet.getAccountId() ?? 'No id'}}</div>
-    </div>
-    <div>
-      <div>Public Key:</div>
-      <div class="break-words"><span>{{ wallet.getAccountKey()}}</span></div>
+      <div>Account ID:</div><div>{{ signer.getAccountId() ?? 'No id'}}</div>
     </div>
   </div>
   <wallet-balance class="my-4" />

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useBladeStore } from "@/store/blade-wallet";
+import { useBladeStore } from "@/store/blade-signer";
 import { AccountId } from "@hashgraph/sdk";
 
 const bladeStore = useBladeStore();
@@ -27,7 +27,7 @@ const accountIdString = computed({
 });
 
 const onSubmit = async ()=>{
-  const result = await bladeStore.wallet!.getProvider().getAccountInfo( accountId.value! );
+  const result = await bladeStore.getAccountInfo( accountId.value! );
   return `Account Balance: ${result.balance} Owned Nfts: ${result.ownedNfts}`;
 }
 

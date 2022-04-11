@@ -46,15 +46,15 @@ export const useBladeStore = defineStore('blade-store', {
     },
 
     getLedgerId() {
-      return this.signer!.getLedgerId();
+      return this.signer?.getLedgerId();
     },
 
     getNetwork() {
-      return this.signer!.getNetwork();
+      return this.signer?.getNetwork();
     },
 
     getMirrorNetwork() {
-      return this.signer!.getMirrorNetwork();
+      return this.signer?.getMirrorNetwork();
     },
 
     async sendRequest<RequestT, ResponseT, OutputT>(request: Executable<RequestT, ResponseT, OutputT>) {

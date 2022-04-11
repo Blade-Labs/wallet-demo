@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
-  import { useBladeStore } from '@/store/blade-wallet';
+  import { useBladeStore } from '@/store/blade-signer';
+  import { useDemoStore } from '@/store/demo-store';
 
   const bladeStore = useBladeStore();
+  const demoStore = useDemoStore();
 
-  const createSession = async()=>{
-    console.log(`trying to create session.`);
+  const tryReload = ()=>{
+    demoStore.load();
   }
 
 </script>
@@ -17,7 +19,7 @@
   <section class="flex flex-row justify-between space-x-5" v-if="bladeStore.hasSession">
     <div class="flex flex-col space-y-5 w-1/2">
 
-      <wallet-account :wallet="bladeStore.wallet"/>
+      <wallet-account :signer="bladeStore.signer"/>
       <form-send-hbar />
       <form-get-receipt />
 
@@ -34,7 +36,7 @@
   </section>
   <section v-else>
 
-    <action-button @click="createSession">New Session</action-button>
+    <action-button @click="tryReload">New Session</action-button>
 
   </section>
 
