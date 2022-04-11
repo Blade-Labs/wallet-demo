@@ -7,9 +7,7 @@ This is a demo app that runs locally for testing your DApp integration with the 
 
 - [node](https://nodejs.org/) v16+
 
-- [pnpm](https://pnpm.io/)
-
-- [Latest Blade Wallet Build](https://github.com/Blade-Labs/wallet-web#installation-of-browser-extension)
+- [Latest Blade Wallet Build](https://github.com/Blade-Labs/wallet-web#installation-of-browser-extension) v. 0.4.0 or higher.
 
 ## Using Blade Connect interface
 For example usage and testing the below APIs using a Demo App, please go here and setup the app locally: [Demo App](https://github.com/Blade-Labs/wallet-demo)
