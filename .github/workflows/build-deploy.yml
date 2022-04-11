@@ -27,3 +27,4 @@ jobs:
       with:
           branch: wallet-demo
           folder: dist
+          public_host_base: wallet-demo
