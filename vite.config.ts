@@ -59,6 +59,7 @@ export default async function ({ mode, command }) {
   ];
 
   return defineConfig({
+    base: process.env.PUBLIC_HOST_BASE ?? '/',
     resolve: {
       alias: [
         { find: /^@\//, replacement: `${resolve(__dirname, './src')}/` },
