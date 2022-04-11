@@ -9,6 +9,13 @@ import dotenv from 'dotenv';
 
 import { accessSync } from 'fs';
 
+const getPublicBase = () => {
+
+  const base = process.env.PUBLIC_HOST_BASE ?? '/';
+  return (base.charAt(0) != '/') ? `/${base}` : base;
+
+
+}
 
 const getApiBase = (url: string) => {
 
@@ -58,7 +65,7 @@ export default async function ({ mode, command }) {
     isProduction ? "style-src 'self'" : "style-src 'self' 'unsafe-inline' 'unsafe-eval'",
   ];
 
-  const publicBasePath = process.env.PUBLIC_HOST_BASE ?? '/';
+  const publicBasePath = getPublicBase();
   console.log(`Deploying to base: ${publicBasePath}`);
 
   return defineConfig({
