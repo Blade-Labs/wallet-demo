@@ -24,7 +24,8 @@ jobs:
     - run: npm run build
     - name: deploy to github pages
       uses: JamesIves/github-pages-deploy-action@4.1.1
+      env:
+        PUBLIC_HOST_BASE: wallet-demo
       with:
           branch: wallet-demo
           folder: dist
-          public_host_base: wallet-demo
