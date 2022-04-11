@@ -11,8 +11,12 @@ import { accessSync } from 'fs';
 
 const getPublicBase = () => {
 
-  const base = process.env.PUBLIC_HOST_BASE ?? '/';
-  return (base.charAt(0) != '/') ? `/${base}` : base;
+  let base = process.env.PUBLIC_HOST_BASE ?? '/';
+  base = (base.charAt(0) != '/') ? `/${base}` : base;
+  if (base.charAt(base.length - 1) != '/') {
+    base = base + '/';
+  }
+  return base;
 
 
 }
