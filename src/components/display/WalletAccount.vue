@@ -1,17 +1,16 @@
 
 <script setup lang="ts">
-import { useProviderStore } from '@/store/blade-provider';
-import { BladeConnectorAccount } from '../../api/blade';
+import type { Signer } from '@hashgraph/sdk';
 
 const props = defineProps<{
-  account:BladeConnectorAccount
+  signer:Signer
 }>();
 
-  const endSession = async()=>{
-    console.log(`ending session.`);
-    return useProviderStore().closeSession();
-  }
 
+const network = computed(()=>{
+
+  return props.signer.getLedgerId()?.toString()
+});
 
 </script>
 
@@ -20,13 +19,9 @@ const props = defineProps<{
             collapsible
             :open="false">
   <div class="flex flex-col space-y-2">
-    <div class="flex justify-between"><div>Network:</div><div>{{account?.network}}</div></div>
+    <div class="flex justify-between"><div>Network:</div><div>{{network}}</div></div>
     <div class="flex justify-between">
-      <div>Account ID:</div><div>{{account?.id ?? 'No id'}}</div>
-    </div>
-    <div>
-      <div>Public Key:</div>
-      <div class="break-words"><span>{{account?.publicKey}}</span></div>
+      <div>Account ID:</div><div>{{ signer.getAccountId() ?? 'No id'}}</div>
     </div>
   </div>
   <wallet-balance class="my-4" />

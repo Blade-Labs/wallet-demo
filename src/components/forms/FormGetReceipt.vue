@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { useProviderStore } from "@/store/blade-provider";
+import { useBladeStore } from "@/store/blade-signer";
 import { toHexBytes } from "@/utils/encode";
 import { TransactionId } from "@hashgraph/sdk";
 
-const providerStore = useProviderStore();
+const bladeStore = useBladeStore();
 const transactionId = ref<TransactionId|null>();
 
 let _transactionIdString:string = '';
@@ -30,7 +30,7 @@ const transactionIdString = computed({
 });
 
 const onSubmit = async ()=>{
-  const result = await providerStore.provider!.getTransactionReceipt( transactionId.value! );
+  const result = await bladeStore.getTransactionReceipt( transactionId.value! );
   return `Receipt bytes: ${toHexBytes( result.toBytes() )}`;
 }
 

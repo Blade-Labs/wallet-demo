@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
-import { useProviderStore } from './blade-provider';
-import { walletLoadedEvent } from '../api/blade';
+import { useBladeStore } from './blade-signer';
+import { BladeSigner, BladeWalletError } from '@bladelabs/bladeconnect';
 
 type DemoStoreState = {
   bladeLoaded: boolean,
-  providerNotFound: boolean,
+  bladeNotFound: boolean,
 }
 
 export const useDemoStore = defineStore('demo-store', {
 
   state: (): DemoStoreState => ({
     bladeLoaded: false,
-    providerNotFound: false
+    bladeNotFound: false
   }),
 
   actions: {
@@ -19,43 +19,40 @@ export const useDemoStore = defineStore('demo-store', {
     /**
      * Listen for hederaWalletLoaded event from Blade extension.
      */
-    load() {
+    async load() {
 
-      if (window.walletProvider != null) {
-        console.log(`walletProvided found`);
-        this.onLoaded();
-      } else {
-        document.addEventListener(walletLoadedEvent, this.onLoaded);
-        setTimeout(() => this.walletTimeout(), 500);
+      console.log(`attempting blade wallet load...`);
+      try {
 
-      }
-
-    },
-
-    /**
-     * Wallet does not appear to exist.
-     */
-    walletTimeout() {
-
-      if (!this.bladeLoaded) {
-        this.providerNotFound = true;
-      }
-
-    },
-
-    onLoaded() {
-
-      if (window.walletProvider != null) {
+        const signer = new BladeSigner();
+        await signer.createSession();
+        useBladeStore().setSigner(signer);
         this.bladeLoaded = true;
-        this.providerNotFound = false;
-        useProviderStore().setProvider(window.walletProvider);
-      } else {
-        console.log(`wallet not found`);
-        this.bladeLoaded = false;
-        this.providerNotFound = true;
+        this.bladeNotFound = false;
+
+      } catch (err) {
+
+        if (err instanceof Error) {
+
+          if (err.name === BladeWalletError.ExtensionNotFound) {
+
+            console.log(`blade extension not found.`);
+            this.bladeNotFound = true;
+            // recheck for blade extension.
+            setTimeout(() => this.load(), 500);
+
+          } else if (err.name === BladeWalletError.NoSession) {
+            console.warn(`No active blade session.`);
+          }
+
+        } else {
+          console.error(err);
+          this.bladeNotFound = true;
+        }
+
       }
 
-    },
+    }
 
   },
 

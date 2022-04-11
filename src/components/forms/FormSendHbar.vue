@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 import { AccountId } from "@hashgraph/sdk";
 import { BigNumber } from "bignumber.js";
-import { useProviderStore } from '../../store/blade-provider';
+import { useBladeStore } from '../../store/blade-signer';
 import { toHexBytes } from '../../utils/encode';
 
-const providerStore = useProviderStore();
+const bladeStore = useBladeStore();
 const amount = ref<BigNumber>();
 const toAccount = ref<AccountId|null>();
 
@@ -32,10 +32,10 @@ const accountString = computed({
 const onSubmit = async ()=>{
 
   
-    const result = await providerStore.sendTransfer(
+    const result = await bladeStore.sendTransfer(
       {accountId:toAccount.value!, amount:amount.value!});
 
-    const receipt = await providerStore.waitReceipt(result!);
+    const receipt = await bladeStore.getTransactionReceipt(result!.transactionId);
     //resultMessage.value = `Transaction receipt: ${receipt.scheduleId}`;
 
     return `Transaction id: ${result?.transactionId}\n`+
