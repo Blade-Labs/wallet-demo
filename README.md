@@ -16,14 +16,14 @@ For example usage and testing the below APIs using a Demo App, please go here an
 
 BladeWallet uses the [Hedera Signer and Wallet Interface](https://hips.hedera.com/hip/hip-338)
 
-Install `bladeconnect` npm package:
+Install `blade-web3` npm package:
 
-`npm install --save @bladelabs/bladeconnect`
+`npm install --save @bladelabs/blade-web3.js`
 
 Create new signer Object:
 
 ```
-import { BladeSigner } from '@bladelabs/bladeconnect';
+import { BladeSigner } from '@bladelabs/blade-web3.js';
 
 async function loadWallet() {
 
