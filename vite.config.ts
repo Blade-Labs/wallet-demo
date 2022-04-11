@@ -66,23 +66,6 @@ export default async function ({ mode, command }) {
       ]
     },
 
-    build: {
-
-      /*rollupOptions: {
-
-        output: {
-          manualChunks(id) {
-            if (id.includes("node_modules/@hashgraph")) {
-              return "hashgraph";
-            }
-            if (id.includes("node_modules/") && !id.endsWith(".css")) {
-              return "vendor";
-            }
-          }
-        },
-      }*/
-    },
-
     plugins: [
 
       html({
@@ -119,9 +102,9 @@ export default async function ({ mode, command }) {
     },
 
     preview: {
-      port: 3001,
+      port: 5000,
       cors: true,
-      https: false,
+      https: true,
     },
 
 
