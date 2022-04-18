@@ -1,16 +1,21 @@
 
 <script setup lang="ts">
+import { useBladeStore } from '@/store/blade-signer';
 import type { Signer } from '@hashgraph/sdk';
 
+const bladeStore = useBladeStore();
 const props = defineProps<{
   signer:Signer
 }>();
-
 
 const network = computed(()=>{
 
   return props.signer.getLedgerId()?.toString()
 });
+
+const endSession = ()=>{
+  bladeStore.setSigner(null);
+}
 
 </script>
 
