@@ -1,5 +1,8 @@
 <script setup type="ts">
 
+const demoAppVersion = ref(
+  import.meta.env.blade_demo_version ?? 'Not Found'
+);
 
 const bladeVersion = ref(
   import.meta.env.blade_api_version ?? 'Not Found'
@@ -11,7 +14,7 @@ const bladeVersion = ref(
 <template>
   
 <div class="flex flex-row px-20 py-6 text-lg items-baseline">
-  <div>Blade Wallet Demo App</div>
+  <div>Blade Wallet Demo App version: {{ demoAppVersion }}</div>
   <div class="flex-1"></div>
   <div class="text-xs">blade-web3.js version:
     <a class="text-basePurple visited:opacity-80" 

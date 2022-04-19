@@ -8,6 +8,7 @@ import autoImport from 'unplugin-auto-import/vite'
 import dotenv from 'dotenv';
 
 import { accessSync, readFileSync } from 'fs';
+import { env } from 'process';
 
 const getPublicBase = () => {
 
@@ -82,7 +83,8 @@ export default async function ({ mode, command }) {
     },
 
     define: {
-      "import.meta.env.blade_api_version": '"' + findPackageVersion('@bladelabs/blade-web3.js') + '"'
+      "import.meta.env.blade_api_version": '"' + findPackageVersion('@bladelabs/blade-web3.js') + '"',
+      "import.meta.env.blade_demo_version": '"' + process.env.npm_package_version + '"'
     },
 
     plugins: [
