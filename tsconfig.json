@@ -17,7 +17,6 @@
     "forceConsistentCasingInFileNames": true,
     "types": [
       "vite/client",
-      "node"
     ],
     "lib": [
       "esnext",

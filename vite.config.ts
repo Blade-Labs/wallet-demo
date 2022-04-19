@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import html from "vite-plugin-html";
+import { createHtmlPlugin } from "vite-plugin-html";
 import { resolve } from 'path'
 import iconsResolver from 'unplugin-icons/resolver'
 import components from 'unplugin-vue-components/vite'
@@ -87,9 +87,9 @@ export default async function ({ mode, command }) {
 
     plugins: [
 
-      html({
+      createHtmlPlugin({
         inject: {
-          injectData: {
+          data: {
             contentSecurityPolicy: securityPolicies.join("; "),
           },
         },
@@ -123,7 +123,7 @@ export default async function ({ mode, command }) {
     preview: {
       port: 5000,
       cors: true,
-      https: true,
+      https: true
     },
 
 
