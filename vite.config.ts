@@ -8,7 +8,6 @@ import autoImport from 'unplugin-auto-import/vite'
 import dotenv from 'dotenv';
 
 import { accessSync, readFileSync } from 'fs';
-import { env } from 'process';
 
 const getPublicBase = () => {
 
