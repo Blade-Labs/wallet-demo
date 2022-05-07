@@ -19,7 +19,11 @@
   <section class="flex flex-row justify-between space-x-5" v-if="bladeStore.hasSession">
     <div class="flex flex-col space-y-5 w-1/2">
 
-      <wallet-account :signer="bladeStore.signer"/>
+      <wallet-account
+        :account-id="bladeStore.accountId"
+        :network="bladeStore.signer?.getLedgerId()?.toString()"
+      />
+
       <form-send-hbar />
       <form-get-receipt />
 

@@ -1,22 +1,17 @@
-
 <script setup lang="ts">
 import { useBladeStore } from '@/store/blade-signer';
-import type { Signer } from '@hashgraph/sdk';
+import type { AccountId } from '@hashgraph/sdk';
 
 const bladeStore = useBladeStore();
-const props = defineProps<{
-  signer:Signer
+
+defineProps<{
+  accountId?: AccountId,
+  network?: string,
 }>();
-
-const network = computed(()=>{
-
-  return props.signer.getLedgerId()?.toString()
-});
 
 const endSession = ()=>{
   bladeStore.setSigner(null);
 }
-
 </script>
 
 <template>
@@ -26,7 +21,7 @@ const endSession = ()=>{
   <div class="flex flex-col space-y-2">
     <div class="flex justify-between"><div>Network:</div><div>{{network}}</div></div>
     <div class="flex justify-between">
-      <div>Account ID:</div><div>{{ signer.getAccountId() ?? 'No id'}}</div>
+      <div>Account ID:</div><div>{{ accountId ?? 'No id'}}</div>
     </div>
   </div>
   <wallet-balance class="my-4" />
