@@ -7,19 +7,13 @@ type BalanceStoreState = {
 }
 
 export const useBalanceStore = defineStore('balance-store', {
-
   state: (): BalanceStoreState => ({
     hbar: null
   }),
 
   actions: {
-
     setBalance(balance: Hbar | BigNumber) {
-
       this.hbar = BigNumber.isBigNumber(balance) ? Hbar.from(balance, HbarUnit.Hbar) : balance;
-
     }
-
   },
-
 });

@@ -1,48 +1,62 @@
-import type { AccountId, Transaction, TransactionResponse, TransactionReceipt, Provider, Signer, Executable } from '@hashgraph/sdk';
-import { TransactionReceiptQuery, TransferTransaction, TransactionId, AccountInfoQuery } from '@hashgraph/sdk';
+import type {
+  AccountId,
+  Transaction,
+  Signer,
+  Executable,
+} from "@hashgraph/sdk";
+import {
+  TransactionReceiptQuery,
+  TransferTransaction,
+  TransactionId,
+  AccountInfoQuery,
+} from "@hashgraph/sdk";
 
-import { defineStore } from 'pinia';
-import BigNumber from 'bignumber.js';
-import { useBalanceStore } from './balance-store';
+import { defineStore } from "pinia";
+import BigNumber from "bignumber.js";
+import { useBalanceStore } from "./balance-store";
+import { BladeSigner } from "@bladelabs/blade-web3.js";
 
 type BladeStoreState = {
-  signer?: Signer | null,
-  hasSession: boolean
-}
+  signer: Signer | null;
+  accountId: AccountId | null;
+  hasSession: boolean;
+};
 
-export const useBladeStore = defineStore('blade-store', {
-
+export const useBladeStore = defineStore("blade-store", {
   state: (): BladeStoreState => ({
     signer: null,
-    hasSession: false
+    accountId: null,
+    hasSession: false,
   }),
 
   actions: {
-
-    setSigner(signer?: Signer | null) {
-
-      this.signer = signer;
+    setSigner(signer: BladeSigner | null) {
+      this.signer = signer as Signer | null;
+      this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = this.signer != null;
 
+      void this.fetchMyBalance();
+
+      signer?.onAccountChanged(() =>  {
+        // TODO: do other things on account changed?
+        this.accountId = this.signer?.getAccountId() ?? null;
+
+        void this.fetchMyBalance();
+      });
     },
 
     async getAccountBalance() {
-
       return this.signer?.getAccountBalance();
-
     },
 
     async getAccountInfo(accountId: AccountId | string) {
-
       return this.sendRequest(new AccountInfoQuery({ accountId }));
-
     },
 
     async getTransactionReceipt(transactionId: TransactionId | string) {
-
-      return this.sendRequest(new TransactionReceiptQuery({ transactionId: transactionId }));
-
-
+      return this.sendRequest(
+        new TransactionReceiptQuery({ transactionId: transactionId })
+      );
     },
 
     getLedgerId() {
@@ -57,46 +71,43 @@ export const useBladeStore = defineStore('blade-store', {
       return this.signer?.getMirrorNetwork();
     },
 
-    async sendRequest<RequestT, ResponseT, OutputT>(request: Executable<RequestT, ResponseT, OutputT>) {
+    async sendRequest<RequestT, ResponseT, OutputT>(
+      request: Executable<RequestT, ResponseT, OutputT>
+    ) {
       return this.signer!.sendRequest(request);
     },
 
     async requestSign(transaction: Transaction) {
-
       return await this.signer?.signTransaction(transaction);
-
     },
 
-    async sendTransfer(transfer: { accountId: AccountId, amount: BigNumber }) {
-      const transaction = new TransferTransaction(
-        {
-          hbarTransfers: [{
+    async sendTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
+      if (this.signer == null) return;
+
+      const transaction = new TransferTransaction({
+        hbarTransfers: [
+          {
             accountId: transfer.accountId,
-            amount: transfer.amount
+            amount: transfer.amount,
           },
           {
-            accountId: this.accountId!,
-            amount: transfer.amount.negated()
-          }
-          ]
-        }
+            accountId: this.accountId! as AccountId,
+            amount: transfer.amount.negated(),
+          },
+        ],
+      });
 
-      );
-
-      const result = await this.signer!.sendRequest(transaction);
+      const result = await this.signer.sendRequest(transaction);
 
       this.fetchMyBalance();
 
       return result;
-
     },
 
     async fetchMyBalance() {
-
       const myAccountId = this.accountId;
 
       if (this.signer != null) {
-
         console.log(`fetching account balance: ${myAccountId}`);
         try {
           const balance = await this.signer.getAccountBalance();
@@ -105,15 +116,6 @@ export const useBladeStore = defineStore('blade-store', {
           console.warn(`$err`);
         }
       }
-
-    }
-
+    },
   },
-  getters: {
-
-    accountId(): AccountId | null {
-      return this.signer?.getAccountId() ?? null;
-    }
-  }
-
 });

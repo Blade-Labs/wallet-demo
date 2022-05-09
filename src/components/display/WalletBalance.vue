@@ -5,9 +5,7 @@ import { useBalanceStore } from '../../store/balance-store';
 const balanceStore = useBalanceStore();
 
 const balanceString = computed(()=>{
-
   return balanceStore.hbar?.toString(HbarUnit.Hbar) ?? ''
-
 });
 
 
