@@ -5,7 +5,7 @@
   
   const demoStore = useDemoStore();
   onMounted(async () => await demoStore.load());
-  useIntervalFn(async () => await demoStore.load(), 10000);
+  useIntervalFn(async () => await demoStore.load(), 1000);
 </script>
 
 <template>
