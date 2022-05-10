@@ -28,6 +28,8 @@ export const useDemoStore = defineStore('demo-store', {
 
           // Create and connect signer bridge
           const signer = new BladeSigner();
+
+          console.log(`Creating session...`);
           await signer.createSession();
 
           signer.onWalletLocked(() => { 
