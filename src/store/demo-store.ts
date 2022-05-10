@@ -26,8 +26,10 @@ export const useDemoStore = defineStore('demo-store', {
         if (!this.bladeLoaded) {
           console.log(`Connecting to blade...`);
 
+          // Create and connect signer bridge
           const signer = new BladeSigner();
-        
+          await signer.createSession();
+
           signer.onWalletLocked(() => { 
             console.warn("Wallet locked!");
             this.bladeLoaded = false; 

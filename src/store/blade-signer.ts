@@ -42,7 +42,6 @@ export const useBladeStore = defineStore("blade-store", {
         void this.fetchMyBalance();
       });
       
-      signer?.createSession();
       void this.fetchMyBalance();
     },
 
