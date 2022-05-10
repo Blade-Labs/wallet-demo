@@ -4,6 +4,7 @@
   
   const demoStore = useDemoStore();
   useIntervalFn(() => demoStore.load(), 10000);
+  void demoStore.load();
 </script>
 
 <template>
