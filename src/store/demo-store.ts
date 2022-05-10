@@ -20,17 +20,19 @@ export const useDemoStore = defineStore('demo-store', {
      * Listen for hederaWalletLoaded event from Blade extension.
      */
     async load() {
-      console.log(`attempting blade wallet load...`);
+      console.log(`Checking blade connection...`);
 
       try {
         if (!this.bladeLoaded) {
+          console.log(`Connecting to blade...`);
+
           const signer = new BladeSigner();
+        
           signer.onWalletLocked(() => { 
-            alert("Wallet Locked!"); 
+            console.warn("Wallet locked!");
             this.bladeLoaded = false; 
           });
 
-          await signer.createSession();
           useBladeStore().setSigner(signer);
 
           this.bladeLoaded = true;
@@ -38,18 +40,12 @@ export const useDemoStore = defineStore('demo-store', {
         }
       } catch (err) {
         if (err instanceof Error) {
-
           if (err.name === BladeWalletError.ExtensionNotFound) {
-
             console.log(`blade extension not found.`);
             this.bladeNotFound = true;
-            // recheck for blade extension.
-            setTimeout(() => this.load(), 1000);
-
           } else if (err.name === BladeWalletError.NoSession) {
             console.warn(`No active blade session.`);
           }
-
         } else {
           console.error(err);
           this.bladeNotFound = true;

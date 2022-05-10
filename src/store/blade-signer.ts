@@ -35,14 +35,15 @@ export const useBladeStore = defineStore("blade-store", {
       this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = this.signer != null;
 
-      void this.fetchMyBalance();
-
       signer?.onAccountChanged(() =>  {
         // TODO: do other things on account changed?
         this.accountId = this.signer?.getAccountId() ?? null;
 
         void this.fetchMyBalance();
       });
+      
+      signer?.createSession();
+      void this.fetchMyBalance();
     },
 
     async getAccountBalance() {
