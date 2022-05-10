@@ -3,8 +3,8 @@
   import { useIntervalFn } from "@vueuse/core";
   
   const demoStore = useDemoStore();
-  await demoStore.load();
-  useIntervalFn(() => demoStore.load(), 10000);
+  onMounted(async () => await demoStore.load());
+  useIntervalFn(async () => await demoStore.load(), 10000);
 </script>
 
 <template>
