@@ -109,9 +109,13 @@ export const useBladeStore = defineStore("blade-store", {
 
       if (this.signer != null) {
         console.log(`fetching account balance: ${myAccountId}`);
+        
         try {
-          const balance = await this.signer.getAccountBalance();
-          useBalanceStore().setBalance(balance.hbars);
+          const balance = await this.getAccountBalance();
+          
+          if (balance) {
+            useBalanceStore().setBalance(balance.hbars);
+          }
         } catch (err) {
           console.warn(`$err`);
         }

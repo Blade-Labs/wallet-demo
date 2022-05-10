@@ -43,24 +43,21 @@ export const useDemoStore = defineStore('demo-store', {
       } catch (err) {
         if (err instanceof Error) {
           if (err.name === BladeWalletError.ExtensionNotFound) {
-            console.log(`blade extension not found.`);
+            console.warn(`Blade extension not found.`);
             this.bladeNotFound = true;
           } else if (err.name === BladeWalletError.NoSession) {
             console.warn(`No active blade session.`);
           }
         } else {
+          console.warn("Uncaught: ");
           console.error(err);
           this.bladeNotFound = true;
         }
-
       }
-
     },
 
     setNotFound() {
       this.bladeNotFound = true;
     }
-
   },
-
 });
