@@ -1,14 +1,12 @@
 <script setup lang="ts">
-
   import { useDemoStore } from './store/demo-store';
+  import { useIntervalFn } from "@vueuse/core";
   
   const demoStore = useDemoStore();
-  demoStore.load();
-
+  useIntervalFn(() => demoStore.load(), 1000);
 </script>
 
 <template>
-
 <div class="flex flex-col items-stretch text-white bg-darkGrey">
     <blade-title />
     <div class="flex flex-row w-full h-full bg-darkGrey
@@ -30,9 +28,6 @@
         </div>
         <div class="pt-4">Blade Wallet Not Found.</div>
       </div>
-
-
     </div>
-
 </div>
 </template>

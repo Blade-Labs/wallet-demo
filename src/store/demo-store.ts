@@ -25,6 +25,7 @@ export const useDemoStore = defineStore('demo-store', {
       try {
 
         const signer = new BladeSigner();
+        signer.onWalletLocked(() => alert("Wallet Locked!"));
 
         await signer.createSession();
         useBladeStore().setSigner(signer);
