@@ -28,17 +28,17 @@ export const useDemoStore = defineStore('demo-store', {
 
           // Create and connect signer bridge
           const signer = new BladeSigner();
-          signer.createSession().then(() => {
-            signer.onWalletLocked(() => { 
-              console.warn("Wallet locked!");
-              this.bladeLoaded = false; 
-            });
+          await signer.createSession();
 
-            useBladeStore().setSigner(signer);
-
-            this.bladeLoaded = true;
-            this.bladeNotFound = false;
+          signer.onWalletLocked(() => { 
+            console.warn("Wallet locked!");
+            this.bladeLoaded = false; 
           });
+
+          useBladeStore().setSigner(signer);
+
+          this.bladeLoaded = true;
+          this.bladeNotFound = false;
         }
       } catch (err) {
         this.bladeLoaded = false;
@@ -49,11 +49,11 @@ export const useDemoStore = defineStore('demo-store', {
             this.bladeNotFound = true;
           } else if (err.name === BladeWalletError.NoSession) {
             console.warn(`No active blade session.`);
-          } else if (err.message === "The user's wallet is locked.") {
+          } else if (err.message === `The user's wallet is locked.`) {
             console.warn(`User wallet is locked.`);
+          } else {
+            console.error(`Uncaught: ${err.message}`);
           }
-        } else {
-          console.error(err);
         }
       }
     },
