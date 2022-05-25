@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@bladelabs/blade-web3.js": "^0.9.8",
-    "@fontsource/montserrat": "^4.5.7",
+    "@fontsource/montserrat": "^4.5.10",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@hashgraph/sdk": "^2.11.3",
