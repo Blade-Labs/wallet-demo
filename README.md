@@ -45,18 +45,18 @@ async function loadWallet() {
 ```
 
 
-| API                                                           | Description                                                      |
-| :------------------------------------------------------------ | :--------------------------------------------------------------- |
-| `bladeSigner.getAccountId()`                                  | Get accountId of active account.                                 |
-| `bladeSigner.getAccountBalance( accountId:AccountId\|string)` | Get account balance of the active account.                       |
-| `bladeSigner.getAccountInfo( accountId:AccountId\|string)`    | Get information about a Hedera account on the connected network. |
-| `bladeSigner.checkTransaction(transaction:Transaction)`       | Check that a transaction is valid.                               |
-| `bladeSigner.populateTransaction(transaction:Transaction)`    | Set transaction id with active account.                          |
-| `bladeSigner.sendRequest(request:Executable)`                 | Sign and execute a transaction with active account.              |
-| `bladeSigner.signTransaction(transaction:Transaction)`        | Sign a transaction with active account.                          |
-| `bladeSigner.getLedgerId()`                                   | Ledger Id of the currently connected network.                    |
-| `bladeSigner.getMirrorNetwork()`                              | Return array of mirror nodes for the current network.            |
-| `bladeSigner.getNetwork()`                                    | Get map of nodes for the current hedera network.                 |
+| API                                                        | Description                                                      |
+|:-----------------------------------------------------------| :--------------------------------------------------------------- |
+| `bladeSigner.getAccountId()`                               | Get accountId of active account.                                 |
+| `bladeSigner.getAccountBalance( accountId:AccountId\       |string)` | Get account balance of the active account.                       |
+| `bladeSigner.getAccountInfo( accountId:AccountId\          |string)`    | Get information about a Hedera account on the connected network. |
+| `bladeSigner.checkTransaction(transaction:Transaction)`    | Check that a transaction is valid.                               |
+| `bladeSigner.populateTransaction(transaction:Transaction)` | Set transaction id with active account.                          |
+| `bladeSigner.call(request:Executable)`                     | Sign and execute a transaction with active account.              |
+| `bladeSigner.signTransaction(transaction:Transaction)`     | Sign a transaction with active account.                          |
+| `bladeSigner.getLedgerId()`                                | Ledger Id of the currently connected network.                    |
+| `bladeSigner.getMirrorNetwork()`                           | Return array of mirror nodes for the current network.            |
+| `bladeSigner.getNetwork()`                                 | Get map of nodes for the current hedera network.                 |
 
 
 ## Development

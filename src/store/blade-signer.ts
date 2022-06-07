@@ -41,7 +41,7 @@ export const useBladeStore = defineStore("blade-store", {
 
         void this.fetchMyBalance();
       });
-      
+
       void this.fetchMyBalance();
     },
 
@@ -50,11 +50,11 @@ export const useBladeStore = defineStore("blade-store", {
     },
 
     async getAccountInfo(accountId: AccountId | string) {
-      return this.sendRequest(new AccountInfoQuery({ accountId }));
+      return this.call(new AccountInfoQuery({ accountId }));
     },
 
     async getTransactionReceipt(transactionId: TransactionId | string) {
-      return this.sendRequest(
+      return this.call(
         new TransactionReceiptQuery({ transactionId: transactionId })
       );
     },
@@ -71,10 +71,10 @@ export const useBladeStore = defineStore("blade-store", {
       return this.signer?.getMirrorNetwork();
     },
 
-    async sendRequest<RequestT, ResponseT, OutputT>(
+    async call<RequestT, ResponseT, OutputT>(
       request: Executable<RequestT, ResponseT, OutputT>
     ) {
-      return this.signer!.sendRequest(request);
+      return this.signer!.call(request);
     },
 
     async requestSign(transaction: Transaction) {
@@ -97,7 +97,7 @@ export const useBladeStore = defineStore("blade-store", {
         ],
       });
 
-      const result = await this.signer.sendRequest(transaction);
+      const result = await this.signer.call(transaction);
 
       this.fetchMyBalance();
 
@@ -109,10 +109,10 @@ export const useBladeStore = defineStore("blade-store", {
 
       if (this.signer != null) {
         console.log(`fetching account balance: ${myAccountId}`);
-        
+
         try {
           const balance = await this.getAccountBalance();
-          
+
           if (balance) {
             useBalanceStore().setBalance(balance.hbars);
           }
