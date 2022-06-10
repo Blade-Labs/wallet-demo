@@ -38,7 +38,7 @@
     "long": "^5.2.0",
     "pinia": "^2.0.13",
     "uuid": "^8.3.2",
-    "vue": "^3.2.33"
+    "vue": "^3.2.34"
   },
   "devDependencies": {
     "@iconify/json": "^2.1.29",
