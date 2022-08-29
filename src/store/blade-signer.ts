@@ -11,7 +11,6 @@ import {
   TransferTransaction,
   TransactionId,
   AccountInfoQuery,
-  Client,
 } from "@hashgraph/sdk";
 
 import { defineStore } from "pinia";
