@@ -35,6 +35,7 @@
 
       <network-information />
       <form-associate-token />
+      <form-send-token />
       <form-call-contract />
       <form-account-info />
 

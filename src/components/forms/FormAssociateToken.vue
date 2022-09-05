@@ -4,7 +4,7 @@ import { useBladeStore } from '../../store/blade-signer';
 import { toHexBytes } from '../../utils/encode';
 
 const bladeStore = useBladeStore();
-const tokenId = ref<string>("0.0.47717806");
+const tokenId = ref<string>();
 
 const onSubmit = async ()=>{
   const result = await bladeStore.tokenAssociate({

@@ -4,9 +4,9 @@ import { useBladeStore } from '../../store/blade-signer';
 import { toHexBytes } from '../../utils/encode';
 
 const bladeStore = useBladeStore();
-const nftId = ref<string>();
-const nftSerial = ref<string>();
-const toAccount = ref<AccountId|null>();
+const tokenId = ref<string>();
+const amount = ref<number>();
+const accountFrom = ref<AccountId|null>();
 
 let _accountString:string = "";
 const accountString = computed({
@@ -17,19 +17,18 @@ const accountString = computed({
     _accountString = v;
 
     try {
-      toAccount.value = AccountId.fromString(v);
+      accountFrom.value = AccountId.fromString(v);
     } catch (err){
-      toAccount.value = null;
+      accountFrom.value = null;
     }
   }
 });
 
 const onSubmit = async ()=>{
-  const result = await bladeStore.nftTransfer({
-    sender: bladeStore.accountId as AccountId,
-    recipient: toAccount.value as AccountId,
-    tokenId: nftId.value as string,
-    serial: parseInt(nftSerial.value || "0")
+  const result = await bladeStore.tokenTransfer({
+    accountId: accountFrom.value as AccountId,
+    tokenId: tokenId.value as string,
+    amount: amount.value!,
   });
   const receipt = await bladeStore.getTransactionReceipt(result!.transactionId);
 
@@ -40,19 +39,23 @@ const onSubmit = async ()=>{
 }
 
 const canSubmit = computed(()=>{
-  return Boolean(nftId?.value && nftSerial?.value && toAccount?.value);
+  return Boolean(tokenId?.value && accountFrom?.value && amount?.value);
 });
 
 </script>
 
 <template>
   <vue-form
-    title="Transfer NFT"
+    title="Send Token Transaction"
     :onSubmit="onSubmit"
     :canSubmit="canSubmit"
   >
-    <text-box label="NFT ID" v-model="nftId" />
-    <text-box label="NFT Serial" v-model="nftSerial" />
-    <text-box label="To Account" v-model="accountString" />
+    <text-box label="Token ID" v-model="tokenId" />
+    <text-box label="From Account" v-model="accountString" />
+    <token-amount-box
+      label="Token Amount"
+      :decimals="8"
+      v-model="amount"
+    />
   </vue-form>
 </template>

@@ -32,7 +32,7 @@ const accountString = computed({
 const onSubmit = async ()=>{
 
   
-    const result = await bladeStore.sendTransfer(
+    const result = await bladeStore.hbarTransfer(
       {accountId:toAccount.value!, amount:amount.value!});
 
     const receipt = await bladeStore.getTransactionReceipt(result!.transactionId);
@@ -54,13 +54,14 @@ const canSubmit = computed(()=>{
 
 <template>
 <vue-form
-    title="Send Transaction"
+    title="Send HBAR Transaction"
     :onSubmit="onSubmit"
     :canSubmit="canSubmit">
 
 
     <text-box label="To Account"
-      v-model="accountString" />
+      v-model="accountString" 
+    />
     <token-amount-box
       label="Hbar Amount"
       :decimals="8"

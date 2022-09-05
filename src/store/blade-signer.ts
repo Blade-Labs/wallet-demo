@@ -84,7 +84,7 @@ export const useBladeStore = defineStore("blade-store", {
       return await this.signer?.signTransaction(transaction);
     },
 
-    async sendTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
+    async hbarTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
       if (this.signer == null) return;
 
       const transaction = new TransferTransaction({
@@ -96,6 +96,35 @@ export const useBladeStore = defineStore("blade-store", {
           {
             accountId: this.accountId! as AccountId,
             amount: transfer.amount.negated(),
+          },
+        ],
+      });
+
+      const result = await this.signer.call(transaction);
+
+      this.fetchMyBalance();
+
+      return result;
+    },
+
+    async tokenTransfer(transfer: {
+      accountId: AccountId,
+      amount: number, 
+      tokenId: TokenId | string
+    }) {
+      if (this.signer == null) return;
+
+      const transaction = new TransferTransaction({
+        tokenTransfers: [
+          {
+            accountId: transfer.accountId,
+            amount: transfer.amount,
+            tokenId: transfer.tokenId,
+          },
+          {
+            accountId: this.accountId! as AccountId,
+            amount: transfer.amount * -1,
+            tokenId: transfer.tokenId,
           },
         ],
       });
@@ -166,6 +195,8 @@ export const useBladeStore = defineStore("blade-store", {
           },
         ],
       });
+
+      transaction.setTransactionMemo("Transaction memo");
 
       const result = await this.signer.call(transaction);
 

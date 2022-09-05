@@ -5,12 +5,12 @@ import { useBladeStore } from '../../store/blade-signer';
 import { toHexBytes } from '../../utils/encode';
 
 const bladeStore = useBladeStore();
-const nftId = ref<string>("0.0.47717806");
-const nftSerial = ref<string>("3");
+const nftId = ref<string>();
+const nftSerial = ref<string>();
 const amount = ref<BigNumber>();
-const accountFrom = ref<AccountId|null>(AccountId.fromString("0.0.47753356"));
+const accountFrom = ref<AccountId|null>();
 
-let _accountString:string = '0.0.47753356';
+let _accountString:string = "";
 const accountString = computed({
   get():string{
     return _accountString;

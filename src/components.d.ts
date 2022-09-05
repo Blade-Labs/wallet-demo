@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     FormCallContract: typeof import('./components/forms/FormCallContract.vue')['default']
     FormGetReceipt: typeof import('./components/forms/FormGetReceipt.vue')['default']
     FormSendHbar: typeof import('./components/forms/FormSendHbar.vue')['default']
+    FormSendToken: typeof import('./components/forms/FormSendToken.vue')['default']
     FormTransferNFT: typeof import('./components/forms/FormTransferNFT.vue')['default']
     FunctionParameter: typeof import('./components/controls/FunctionParameter.vue')['default']
     NetworkInformation: typeof import('./components/display/NetworkInformation.vue')['default']
