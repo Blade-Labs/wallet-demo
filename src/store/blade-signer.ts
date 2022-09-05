@@ -1,8 +1,10 @@
-import type {
+import {
   AccountId,
   Transaction,
   Signer,
   Executable,
+  TokenId,
+  TokenAssociateTransaction,
 } from "@hashgraph/sdk";
 import {
   TransactionReceiptQuery,
@@ -15,6 +17,7 @@ import { defineStore } from "pinia";
 import BigNumber from "bignumber.js";
 import { useBalanceStore } from "./balance-store";
 import { BladeSigner } from "@bladelabs/blade-web3.js";
+import Long from "long";
 
 type BladeStoreState = {
   signer: Signer | null;
@@ -81,7 +84,7 @@ export const useBladeStore = defineStore("blade-store", {
       return await this.signer?.signTransaction(transaction);
     },
 
-    async sendTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
+    async hbarTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
       if (this.signer == null) return;
 
       const transaction = new TransferTransaction({
@@ -95,6 +98,124 @@ export const useBladeStore = defineStore("blade-store", {
             amount: transfer.amount.negated(),
           },
         ],
+      });
+
+      const result = await this.signer.call(transaction);
+
+      this.fetchMyBalance();
+
+      return result;
+    },
+
+    async tokenTransfer(transfer: {
+      accountId: AccountId,
+      amount: number, 
+      tokenId: TokenId | string
+    }) {
+      if (this.signer == null) return;
+
+      const transaction = new TransferTransaction({
+        tokenTransfers: [
+          {
+            accountId: transfer.accountId,
+            amount: transfer.amount,
+            tokenId: transfer.tokenId,
+          },
+          {
+            accountId: this.accountId! as AccountId,
+            amount: transfer.amount * -1,
+            tokenId: transfer.tokenId,
+          },
+        ],
+      });
+
+      const result = await this.signer.call(transaction);
+
+      this.fetchMyBalance();
+
+      return result;
+    },
+
+    async nftTransfer(transfer: {
+      tokenId: TokenId | string,
+      sender: AccountId | string,
+      recipient: AccountId | string,
+      serial: Long | number
+    }) {
+      if (this.signer == null) {
+        return;
+      }
+
+      const transaction = new TransferTransaction({
+        nftTransfers: [
+          {
+            tokenId: transfer.tokenId,
+            sender: transfer.sender,
+            recipient: transfer.recipient,
+            serial: transfer.serial
+          },
+        ],
+      });
+
+      const result = await this.signer.call(transaction);
+
+      this.fetchMyBalance();
+
+      return result;
+    },
+
+    async nftBuy(transfer: {
+      tokenId: TokenId | string,
+      accountFrom: AccountId | string,
+      serial: Long | number,
+      amount: BigNumber,
+    }) {
+      if (this.signer == null) {
+        return;
+      }
+
+      const currentAccount = this.accountId! as AccountId;
+      const transaction = new TransferTransaction({
+        nftTransfers: [
+          {
+            tokenId: transfer.tokenId,
+            sender: transfer.accountFrom,
+            recipient: currentAccount,
+            serial: transfer.serial
+          },
+        ],
+        hbarTransfers: [
+          {
+            accountId: currentAccount,
+            amount: transfer.amount.negated(),
+          },
+          {
+            accountId: transfer.accountFrom,
+            amount: transfer.amount,
+          },
+        ],
+      });
+
+      transaction.setTransactionMemo("Transaction memo");
+
+      const result = await this.signer.call(transaction);
+
+      this.fetchMyBalance();
+
+      return result;
+    },
+
+    async tokenAssociate(params: {
+      tokenId: TokenId | string,
+      recipient: AccountId | string,
+    }) {
+      if (this.signer == null) {
+        return;
+      }
+      
+      const transaction = new TokenAssociateTransaction({
+        tokenIds: [params.tokenId],
+        accountId: params.recipient,
       });
 
       const result = await this.signer.call(transaction);

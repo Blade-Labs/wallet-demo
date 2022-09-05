@@ -24,6 +24,8 @@
         :network="bladeStore.signer?.getLedgerId()?.toString()"
       />
 
+      <form-transfer-NFT />
+      <form-buy-NFT />
       <form-send-hbar />
       <form-get-receipt />
 
@@ -32,6 +34,8 @@
     <div class="flex flex-col space-y-5 w-1/2">
 
       <network-information />
+      <form-associate-token />
+      <form-send-token />
       <form-call-contract />
       <form-account-info />
 
