@@ -36,7 +36,7 @@ export const useBladeStore = defineStore("blade-store", {
     setSigner(signer: BladeSigner | null) {
       this.signer = signer as Signer | null;
       this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
-      this.hasSession = this.signer != null;
+      this.hasSession = !!this.signer && !!this.accountId;
 
       signer?.onAccountChanged(() =>  {
         // TODO: do other things on account changed?
@@ -109,7 +109,7 @@ export const useBladeStore = defineStore("blade-store", {
 
     async tokenTransfer(transfer: {
       accountId: AccountId,
-      amount: number, 
+      amount: number,
       tokenId: TokenId | string
     }) {
       if (this.signer == null) return;
@@ -212,7 +212,7 @@ export const useBladeStore = defineStore("blade-store", {
       if (this.signer == null) {
         return;
       }
-      
+
       const transaction = new TokenAssociateTransaction({
         tokenIds: [params.tokenId],
         accountId: params.recipient,

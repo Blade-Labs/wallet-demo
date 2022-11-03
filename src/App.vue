@@ -1,11 +1,11 @@
 <script setup lang="ts">
+  import {useBladeStore} from "@/store/blade-signer";
   import { onMounted } from "vue";
   import { useDemoStore } from './store/demo-store';
-  import { useIntervalFn } from "@vueuse/core";
-  
+
   const demoStore = useDemoStore();
+  const bladeStore = useBladeStore();
   onMounted(async () => await demoStore.load());
-  useIntervalFn(async () => await demoStore.load(), 1000);
 </script>
 
 <template>
@@ -18,9 +18,8 @@
       font-bold
       px-10 pb-10">
 
-      <blade-wallet v-if="demoStore.bladeLoaded" />
-      <div v-else-if="demoStore.bladeNotFound">
-        
+      <blade-wallet v-if="!demoStore.bladeNotFound" />
+      <div v-else>
         <div>
           Install
           <a href="https://www.bladewallet.io/"
