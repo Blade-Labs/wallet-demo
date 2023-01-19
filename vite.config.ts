@@ -107,7 +107,6 @@ export default async function ({ mode }: ConfigEnv) {
         "vue",
         "@fontsource/montserrat",
         "@vueuse/core",
-        "@bladelabs/hedera-wallet-connect",
         "@bladelabs/blade-web3.js"
       ]
     },

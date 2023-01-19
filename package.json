@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --force",
     "check": "run-s check:*",
     "check:eslint": "eslint src",
     "check:vue": "vue-tsc --noEmit",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@bladelabs/blade-web3.js": "file:./bladelabs-blade-web3.js-0.10.0.tgz",
+    "@bladelabs/hedera-wallet-connect": "file:./bladelabs-hedera-wallet-connect-0.1.0.tgz",
     "@fontsource/montserrat": "^4.5.10",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
