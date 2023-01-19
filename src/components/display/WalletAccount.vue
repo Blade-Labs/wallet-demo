@@ -26,10 +26,5 @@ const endSession = ()=>{
     </div>
   </div>
   <wallet-balance class="my-4" />
-  <div class="flex flex-row justify-end mt-3">
-    <action-button @click="endSession">
-      Close Session
-    </action-button>
-  </div>
 </vue-section>
 </template>

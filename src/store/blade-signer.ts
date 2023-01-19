@@ -16,8 +16,9 @@ import {
 import { defineStore } from "pinia";
 import BigNumber from "bignumber.js";
 import { useBalanceStore } from "./balance-store";
-import { BladeSigner } from "@bladelabs/blade-web3.js";
+import { BladeSigner, HederaNetwork } from "@bladelabs/blade-web3.js";
 import Long from "long";
+import {useDemoStore} from "@/store/demo-store";
 
 type BladeStoreState = {
   signer: Signer | null;
@@ -37,11 +38,13 @@ export const useBladeStore = defineStore("blade-store", {
       this.signer = signer as Signer | null;
       this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = !!this.signer && !!this.accountId;
+      useDemoStore().account = this.accountId?.toString() || null;
+      const ledgerId = this.signer?.getLedgerId();
+      if (ledgerId) {
+        useDemoStore().network = ledgerId.toString() as HederaNetwork;
+      }
 
       signer?.onAccountChanged(() =>  {
-        // TODO: do other things on account changed?
-        this.accountId = this.signer?.getAccountId() ?? null;
-
         void this.fetchMyBalance();
       });
 
@@ -100,7 +103,9 @@ export const useBladeStore = defineStore("blade-store", {
         ],
       });
 
-      const result = await this.signer.call(transaction);
+      const populatedTransaction = await this.signer.populateTransaction(transaction);
+      const signedTransaction = await this.signer.signTransaction(populatedTransaction.freeze());
+      const result = await this.signer.call(signedTransaction);
 
       this.fetchMyBalance();
 
@@ -129,7 +134,9 @@ export const useBladeStore = defineStore("blade-store", {
         ],
       });
 
-      const result = await this.signer.call(transaction);
+      const populatedTransaction = await this.signer.populateTransaction(transaction);
+      const signedTransaction = await this.signer.signTransaction(populatedTransaction.freeze());
+      const result = await this.signer.call(signedTransaction);
 
       this.fetchMyBalance();
 
@@ -157,7 +164,9 @@ export const useBladeStore = defineStore("blade-store", {
         ],
       });
 
-      const result = await this.signer.call(transaction);
+      const populatedTransaction = await this.signer.populateTransaction(transaction);
+      const signedTransaction = await this.signer.signTransaction(populatedTransaction.freeze());
+      const result = await this.signer.call(signedTransaction);
 
       this.fetchMyBalance();
 
@@ -198,7 +207,9 @@ export const useBladeStore = defineStore("blade-store", {
 
       transaction.setTransactionMemo("Transaction memo");
 
-      const result = await this.signer.call(transaction);
+      const populatedTransaction = await this.signer.populateTransaction(transaction);
+      const signedTransaction = await this.signer.signTransaction(populatedTransaction.freeze());
+      const result = await this.signer.call(signedTransaction);
 
       this.fetchMyBalance();
 
@@ -218,7 +229,9 @@ export const useBladeStore = defineStore("blade-store", {
         accountId: params.recipient,
       });
 
-      const result = await this.signer.call(transaction);
+      const populatedTransaction = await this.signer.populateTransaction(transaction);
+      const signedTransaction = await this.signer.signTransaction(populatedTransaction.freeze());
+      const result = await this.signer.call(signedTransaction);
 
       this.fetchMyBalance();
 
@@ -226,11 +239,7 @@ export const useBladeStore = defineStore("blade-store", {
     },
 
     async fetchMyBalance() {
-      const myAccountId = this.accountId;
-
       if (this.signer != null) {
-        console.log(`fetching account balance: ${myAccountId}`);
-
         try {
           const balance = await this.getAccountBalance();
 

@@ -1,40 +1,33 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { createHtmlPlugin } from "vite-plugin-html";
-import { resolve } from 'path'
-import iconsResolver from 'unplugin-icons/resolver'
-import components from 'unplugin-vue-components/vite'
-import autoImport from 'unplugin-auto-import/vite'
+import {ConfigEnv, defineConfig} from 'vite';
+import vue from '@vitejs/plugin-vue';
+import basicSsl from '@vitejs/plugin-basic-ssl';
+import {createHtmlPlugin} from "vite-plugin-html";
+import {resolve} from 'path';
+import components from 'unplugin-vue-components/vite';
+import autoImport from 'unplugin-auto-import/vite';
 import dotenv from 'dotenv';
 
 import { accessSync, readFileSync } from 'fs';
 
 const getPublicBase = () => {
-
   let base = process.env.PUBLIC_HOST_BASE ?? '/';
   base = (base.charAt(0) != '/') ? `/${base}` : base;
   if (base.charAt(base.length - 1) != '/') {
     base = base + '/';
   }
   return base;
-
-
 }
 
 const getApiBase = (url: string) => {
-
   if (url == null) {
     return 'localhost';
   }
   const portIndex = url.lastIndexOf(':');
   return portIndex > 0 ? url.substring(0, portIndex) : url;
-
 }
 
 const getEnvFile = (mode: string) => {
-
   if (mode != '' && mode !== 'production') {
-
     try {
       /// check if mode file exists.
       const file = `.env.${mode}`;
@@ -43,21 +36,18 @@ const getEnvFile = (mode: string) => {
     } catch (err) {
       //
     }
-
   }
   return '.env';
-
 }
 
 // https://vitejs.dev/config/
-export default async function ({ mode, command }) {
-
+export default async function ({ mode }: ConfigEnv) {
   const isProduction = mode === 'production';
 
   console.log(`running in mode: ${mode}`);
   dotenv.config({ path: getEnvFile(mode) });
 
-  const api_base = getApiBase(process.env.VITE_API_BASE);
+  const api_base = getApiBase(process.env.VITE_API_BASE as string);
 
   let securityPolicies = [
     "default-src 'self'",
@@ -87,7 +77,6 @@ export default async function ({ mode, command }) {
     },
 
     plugins: [
-
       createHtmlPlugin({
         inject: {
           data: {
@@ -96,12 +85,11 @@ export default async function ({ mode, command }) {
         },
       }),
       vue(),
-
+      basicSsl(),
       // auto-import listed packages
       autoImport({
         dts: resolve(__dirname, 'src/auto-imports.d.ts'),
         imports: ["vue"]
-
       }),
       // auto-import components by naming in template
       components({
@@ -109,25 +97,25 @@ export default async function ({ mode, command }) {
         dts: resolve(__dirname, 'src/components.d.ts'),
       }),
     ],
-
     optimizeDeps: {
-
-
+      esbuildOptions: {
+        define: {
+          global: "globalThis"
+        },
+      },
       include: [
         "vue",
         "@fontsource/montserrat",
         "@vueuse/core",
-
+        "@bladelabs/hedera-wallet-connect",
+        "@bladelabs/blade-web3.js"
       ]
     },
-
     preview: {
       port: 5000,
       cors: true,
       https: true
     },
-
-
     server: {
       port: 3001,
       cors: true,
@@ -142,20 +130,14 @@ export default async function ({ mode, command }) {
         ],
       },
     }
-
   });
 }
 
-
-
 function findPackageVersion(name: string) {
-
   try {
-    const contents = JSON.parse(readFileSync(process.env.npm_package_json).toString());
-
+    const contents = JSON.parse(readFileSync(process.env.npm_package_json as string).toString());
     return contents.dependencies[name];
   } catch (err) {
     console.warn(`error reading blade version: ${err}`);
   }
-
 }
