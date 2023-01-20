@@ -17,7 +17,7 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "vue/no-unregistered-components": [
+    "vue/no-undef-components": [
       "error",
       {
         "ignorePatterns": [
