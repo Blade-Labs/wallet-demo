@@ -4,8 +4,8 @@
 </script>
 
 <template>
-  <div class="relative z-auto -top-2/4">
-    <div class="spinner relative flex flex-row items-start justify-center pt-1">
+  <div class="relative z-auto -top-4">
+    <div class="spinner relative flex flex-row items-start justify-center">
       <div v-for="i in 10" :key="i" />
     </div>
   </div>
@@ -15,7 +15,7 @@
 
 .spinner div {
   border-radius: 50%;
-  transform-origin: 0px 16px;
+  transform-origin: 0 16px;
   transform-box: border-box;
   position: absolute;
   animation-duration: 1.5s;
