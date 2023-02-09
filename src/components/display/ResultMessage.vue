@@ -15,7 +15,7 @@ const props = defineProps<{
   enter-from-class="opacity-0"
   enter-active-class="transition-opacity"
   enter-to-class="opacity-100">
-  <div class="text-base transition" :class="[error ? 'text-errorRed' : null]">
+  <div class="text-base transition break-all" :class="[error ? 'text-errorRed' : null]">
     <span>{{
       error != null && error != '' ? error : (message ?? '')
     }}</span>
