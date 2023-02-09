@@ -1,7 +1,6 @@
 import {
   AccountId,
   Transaction,
-  Signer,
   Executable,
   TokenId,
   TokenAssociateTransaction,
@@ -19,9 +18,10 @@ import { useBalanceStore } from "./balance-store";
 import { BladeSigner, HederaNetwork } from "@bladelabs/blade-web3.js";
 import Long from "long";
 import {useDemoStore} from "@/store/demo-store";
+import {ExtendedSigner} from "@/model/signer";
 
 type BladeStoreState = {
-  signer: Signer | null;
+  signer: ExtendedSigner | null;
   accountId: AccountId | null;
   hasSession: boolean;
 };
@@ -35,7 +35,7 @@ export const useBladeStore = defineStore("blade-store", {
 
   actions: {
     setSigner(signer: BladeSigner | null) {
-      this.signer = signer as Signer | null;
+      this.signer = signer as ExtendedSigner | null;
       this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = !!this.signer && !!this.accountId;
       useDemoStore().account = this.accountId?.toString() || null;
@@ -85,6 +85,10 @@ export const useBladeStore = defineStore("blade-store", {
 
     async requestSign(transaction: Transaction) {
       return await this.signer?.signTransaction(transaction);
+    },
+
+    async signMessages(messages: Uint8Array[], likeHethers: boolean = false) {
+      return this.signer?.sign(messages, {likeHethers});
     },
 
     async hbarTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {

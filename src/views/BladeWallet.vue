@@ -2,6 +2,7 @@
 
   import { useBladeStore } from '@/store/blade-signer';
   import { useDemoStore } from '@/store/demo-store';
+  import FormSign from "@/components/forms/FormSign.vue";
 
   const bladeStore = useBladeStore();
   const demoStore = useDemoStore();
@@ -54,7 +55,7 @@
       <form-buy-NFT />
       <form-send-hbar />
       <form-get-receipt />
-
+      <form-sign />
 
     </div>
     <div class="flex flex-col space-y-5 w-1/2">
