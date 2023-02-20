@@ -19,7 +19,7 @@
     "url": "git+https://github.com/Blade-Labs/wallet-demo.git"
   },
   "dependencies": {
-    "@bladelabs/blade-web3.js": "file:./bladelabs-blade-web3.js-0.10.0.tgz",
+    "@bladelabs/blade-web3.js": "0.10.0-beta.1",
     "@bladelabs/hedera-wallet-connect": "file:./bladelabs-hedera-wallet-connect-0.1.0.tgz",
     "@fontsource/montserrat": "^4.5.14",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
