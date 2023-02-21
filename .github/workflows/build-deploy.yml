@@ -14,15 +14,11 @@ jobs:
         
     steps:
     - uses: actions/checkout@v2
-
-    - name: Cache npm modules
-      uses: actions/cache@v2
+    - uses: actions/setup-node@v3
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-
-
+        node-version: '18.14.1'
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
     - run: npm ci
     - run: npm run build
     - name: deploy to github pages
