@@ -19,7 +19,7 @@
     "url": "git+https://github.com/Blade-Labs/wallet-demo.git"
   },
   "dependencies": {
-    "@bladelabs/blade-web3.js": "beta",
+    "@bladelabs/blade-web3.js": "0.10.1",
     "@fontsource/montserrat": "^4.5.14",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
