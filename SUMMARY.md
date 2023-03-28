@@ -2,4 +2,4 @@
 
 * [Blade Wallet Demo](README.md)
 * [Introduction](introduction.md)
-* [Page 1](page-1.md)
+* [Getting Started](getting-started.md)
