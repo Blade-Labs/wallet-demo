@@ -24,9 +24,22 @@ const step = computed(()=>Math.pow(10,-(props.decimals??1)));
 const onChanged = (e: Event) => {
   const newValue = (<HTMLInputElement>e.target).value;
   try {
-    emit("update:modelValue", new BigNumber(newValue));
+    const value = new BigNumber(newValue);
+    if (!value.isNaN()) {
+      emit("update:modelValue", value);
+    }
   } catch (err) { }
 };
+
+const onBlur = (e: Event) => {
+  const modelValue = props.modelValue.toString();
+  const element = <HTMLInputElement>e.target;
+
+  if (element.value !== modelValue) {
+    element.value = modelValue;
+    element.dispatchEvent(new Event('input'));
+  }
+}
 </script>
 
 
@@ -40,10 +53,10 @@ const onChanged = (e: Event) => {
     <input
       class="bg-insigniaWhite rounded-lg max-w-text-input border-none
       text-left"
-      :value="modelValue?.toString() ?? new BigNumber(0)"
       :placeholder="placeholder"
       @input="onChanged"
       @change="onChanged"
+      @blur="onBlur"
       :id="elmId('amountField')"
       :step="step"
       name="amount"
