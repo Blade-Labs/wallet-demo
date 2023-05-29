@@ -1,12 +1,13 @@
 <script setup lang='ts'>
-import { AccountId } from "@hashgraph/sdk";
-import { BigNumber } from "bignumber.js";
-import { useBladeStore } from '../../store/blade-signer';
-import { toHexBytes } from '../../utils/encode';
+import {AccountId} from "@hashgraph/sdk";
+import {BigNumber} from "bignumber.js";
+import {TokenToBuyNFTWith, useBladeStore} from '../../store/blade-signer';
+import {toHexBytes} from '../../utils/encode';
 
 const bladeStore = useBladeStore();
 const nftId = ref<string>();
 const nftSerial = ref<string>();
+const token = ref<boolean>();
 const amount = ref<BigNumber>();
 const accountFrom = ref<AccountId|null>();
 
@@ -32,6 +33,7 @@ const onSubmit = async ()=>{
     tokenId: nftId.value as string,
     serial: parseInt(nftSerial.value || "0"),
     amount: amount.value!,
+    tokenToBuyWith: token.value ? TokenToBuyNFTWith.USDC : TokenToBuyNFTWith.HBAR
   });
   const receipt = await bladeStore.getTransactionReceipt(result!.transactionId);
 
@@ -56,8 +58,9 @@ const canSubmit = computed(()=>{
     <text-box label="NFT ID" v-model="nftId" />
     <text-box label="NFT Serial" v-model="nftSerial" />
     <text-box label="From Account" v-model="accountString" />
+    <toggle-control label="Switch between HBAR and USDC" v-model="token"/>
     <token-amount-box
-      label="Hbar Amount"
+      :label="token ? 'USDC Amount' : 'HBAR Amount'"
       :decimals="8"
       v-model="amount"
     />

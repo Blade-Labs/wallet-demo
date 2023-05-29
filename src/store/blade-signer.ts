@@ -1,21 +1,19 @@
 import {
   AccountId,
-  Transaction,
+  AccountInfoQuery,
   Executable,
-  TokenId,
   TokenAssociateTransaction,
-} from "@hashgraph/sdk";
-import {
+  TokenId,
+  Transaction,
+  TransactionId,
   TransactionReceiptQuery,
   TransferTransaction,
-  TransactionId,
-  AccountInfoQuery,
 } from "@hashgraph/sdk";
 
-import { defineStore } from "pinia";
+import {defineStore} from "pinia";
 import BigNumber from "bignumber.js";
-import { useBalanceStore } from "./balance-store";
-import { BladeSigner, HederaNetwork } from "@bladelabs/blade-web3.js";
+import {useBalanceStore} from "./balance-store";
+import {BladeSigner, HederaNetwork} from "@bladelabs/blade-web3.js";
 import Long from "long";
 import {useDemoStore} from "@/store/demo-store";
 import {ExtendedSigner} from "@/model/signer";
@@ -25,6 +23,11 @@ type BladeStoreState = {
   accountId: AccountId | null;
   hasSession: boolean;
 };
+
+export enum TokenToBuyNFTWith {
+  HBAR,
+  USDC
+}
 
 export const useBladeStore = defineStore("blade-store", {
   state: (): BladeStoreState => ({
@@ -182,13 +185,15 @@ export const useBladeStore = defineStore("blade-store", {
       accountFrom: AccountId | string,
       serial: Long | number,
       amount: BigNumber,
+      tokenToBuyWith: TokenToBuyNFTWith
     }) {
       if (this.signer == null) {
         return;
       }
 
       const currentAccount = this.accountId! as AccountId;
-      const transaction = new TransferTransaction({
+
+      const transactionProps: any = {
         nftTransfers: [
           {
             tokenId: transfer.tokenId,
@@ -197,7 +202,10 @@ export const useBladeStore = defineStore("blade-store", {
             serial: transfer.serial
           },
         ],
-        hbarTransfers: [
+      };
+
+      if (transfer.tokenToBuyWith === TokenToBuyNFTWith.HBAR) {
+        transactionProps.hbarTransfers = [
           {
             accountId: currentAccount,
             amount: transfer.amount.negated(),
@@ -206,8 +214,26 @@ export const useBladeStore = defineStore("blade-store", {
             accountId: transfer.accountFrom,
             amount: transfer.amount,
           },
-        ],
-      });
+        ]
+      } else {
+        const network = this.getLedgerId()?.toString() as HederaNetwork;
+        const usdcTokenId = network === HederaNetwork.Mainnet ? "0.0.456858" : "0.0.3120049"
+
+        transactionProps.tokenTransfers = [
+          {
+            tokenId: usdcTokenId,
+            accountId: currentAccount,
+            amount: transfer.amount.negated().toNumber(),
+          },
+          {
+            tokenId: usdcTokenId,
+            accountId: transfer.accountFrom,
+            amount: transfer.amount.toNumber(),
+          },
+        ];
+      }
+
+      const transaction = new TransferTransaction(transactionProps);
 
       transaction.setTransactionMemo("Transaction memo");
 
