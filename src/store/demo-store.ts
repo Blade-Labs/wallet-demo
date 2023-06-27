@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {useBladeStore} from './blade-signer';
-import {BladeSigner, BladeWalletError, HederaNetwork} from '@bladelabs/blade-web3.js';
+import {BladeConnector, BladeWalletError, ConnectorStrategy, HederaNetwork} from '@bladelabs/blade-web3.js';
 
 type DemoStoreState = {
   bladeNotFound: boolean,
@@ -8,7 +8,7 @@ type DemoStoreState = {
   availableNetworks: HederaNetwork[],
   network: HederaNetwork,
   account: string | null,
-  connector: BladeSigner | null;
+  connector: BladeConnector | null;
   isBusy: boolean
 }
 
@@ -37,7 +37,8 @@ export const useDemoStore = defineStore('demo-store', {
           this.bladeNotFound = false;
 
           // Create and connect signer bridge
-          this.connector = markRaw(new BladeSigner());
+          const connector = markRaw(new BladeConnector(ConnectorStrategy.EXTENSION));
+          this.connector = connector;
           this.isBusy = true;
           this.availableAccounts = await this.connector.createSession({network: this.network});
 
@@ -45,7 +46,7 @@ export const useDemoStore = defineStore('demo-store', {
             useBladeStore().setSigner(null);
           });
 
-          useBladeStore().setSigner(this.connector as BladeSigner);
+          useBladeStore().setSigner(connector);
         }
       } catch (err) {
         useBladeStore().setSigner(null);
@@ -58,7 +59,7 @@ export const useDemoStore = defineStore('demo-store', {
           } else if (err.message === `The user's wallet is locked.`) {
             console.warn(`User wallet is locked.`);
           } else {
-            console.error(`Uncaught: ${err.message}`);
+            console.error(`Uncaught: ${err.message}`, err.stack);
           }
         }
       } finally {
@@ -71,7 +72,7 @@ export const useDemoStore = defineStore('demo-store', {
     onAccountChange() {
       if (this.account) {
         this.connector?.selectAccount(this.account).then(() => {
-          useBladeStore().setSigner(this.connector as BladeSigner);
+          useBladeStore().setSigner(null);
         });
       }
     },

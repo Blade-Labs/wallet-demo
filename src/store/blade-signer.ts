@@ -13,13 +13,13 @@ import {
 import {defineStore} from "pinia";
 import BigNumber from "bignumber.js";
 import {useBalanceStore} from "./balance-store";
-import {BladeSigner, HederaNetwork} from "@bladelabs/blade-web3.js";
+import {BladeConnector, BladeSigner, HederaNetwork} from "@bladelabs/blade-web3.js";
 import Long from "long";
 import {useDemoStore} from "@/store/demo-store";
-import {ExtendedSigner} from "@/model/signer";
 
 type BladeStoreState = {
-  signer: ExtendedSigner | null;
+  connector: BladeConnector | null;
+  signer: BladeSigner | null;
   accountId: AccountId | null;
   hasSession: boolean;
 };
@@ -31,15 +31,16 @@ export enum TokenToBuyNFTWith {
 
 export const useBladeStore = defineStore("blade-store", {
   state: (): BladeStoreState => ({
+    connector: null,
     signer: null,
     accountId: null,
     hasSession: false,
   }),
 
   actions: {
-    setSigner(signer: BladeSigner | null) {
-      this.signer = signer as ExtendedSigner | null;
-      this.accountId = (signer?.getAccountId() ?? null) as AccountId | null;
+    setSigner(connector: BladeConnector | null) {
+      this.signer = connector && connector?.getSigner();
+      this.accountId = (this.signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = !!this.signer && !!this.accountId;
       useDemoStore().account = this.accountId?.toString() || null;
       const ledgerId = this.signer?.getLedgerId();
@@ -47,7 +48,7 @@ export const useBladeStore = defineStore("blade-store", {
         useDemoStore().network = ledgerId.toString() as HederaNetwork;
       }
 
-      signer?.onAccountChanged(() =>  {
+      connector?.onWalletUnlocked(() =>  {
         void this.fetchMyBalance();
       });
 
@@ -90,8 +91,8 @@ export const useBladeStore = defineStore("blade-store", {
       return await this.signer?.signTransaction(transaction);
     },
 
-    async signMessages(messages: Uint8Array[], likeHethers: boolean = false) {
-      return this.signer?.sign(messages, {likeHethers});
+    async signMessages(messages: Uint8Array[], withHethers: boolean = false) {
+      return this.signer?.sign(messages, {withHethers});
     },
 
     async hbarTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
