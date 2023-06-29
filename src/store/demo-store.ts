@@ -72,7 +72,7 @@ export const useDemoStore = defineStore('demo-store', {
     onAccountChange() {
       if (this.account) {
         this.connector?.selectAccount(this.account).then(() => {
-          useBladeStore().setSigner(null);
+          useBladeStore().setSigner(this.connector as BladeConnector);
         });
       }
     },
