@@ -91,8 +91,8 @@ export const useBladeStore = defineStore("blade-store", {
       return await this.signer?.signTransaction(transaction);
     },
 
-    async signMessages(messages: Uint8Array[], withHethers: boolean = false) {
-      return this.signer?.sign(messages, {withHethers});
+    async signMessages(messages: Uint8Array[], likeHethers: boolean = false) {
+      return this.signer?.sign(messages, {likeHethers});
     },
 
     async hbarTransfer(transfer: { accountId: AccountId; amount: BigNumber }) {
