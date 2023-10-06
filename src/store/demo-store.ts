@@ -37,7 +37,7 @@ export const useDemoStore = defineStore('demo-store', {
           this.bladeNotFound = false;
 
           // Create and connect signer bridge
-          const connector = markRaw(new BladeConnector(ConnectorStrategy.EXTENSION));
+          const connector = markRaw(await BladeConnector.init(ConnectorStrategy.EXTENSION));
           this.connector = connector;
           this.isBusy = true;
           this.availableAccounts = await this.connector.createSession({network: this.network});
