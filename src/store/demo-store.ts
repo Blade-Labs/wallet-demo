@@ -46,6 +46,14 @@ export const useDemoStore = defineStore('demo-store', {
             useBladeStore().setSigner(null);
           });
 
+          this.connector.onSessionDisconnect(() => {
+            this.disconnect();
+          });
+
+          this.connector.onSessionExpire(() => {
+            this.disconnect();
+          });
+
           useBladeStore().setSigner(connector);
         }
       } catch (err) {
