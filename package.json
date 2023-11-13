@@ -28,7 +28,7 @@
     "@types/json-bigint": "^1.0.1",
     "@types/uuid": "^9.0.0",
     "@vueuse/core": "^9.11.0",
-    "axios": "^1.2.3",
+    "axios": "^1.6.0",
     "bignumber.js": "^9.1.1",
     "buffer": "^6.0.3",
     "font-awesome": "^4.7.0",
