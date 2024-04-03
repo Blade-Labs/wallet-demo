@@ -20,6 +20,7 @@ import {useDemoStore} from "@/store/demo-store";
 type BladeStoreState = {
   connector: BladeConnector | null;
   signer: BladeSigner | null;
+  signers: BladeSigner[] | null;
   accountId: AccountId | null;
   hasSession: boolean;
 };
@@ -33,13 +34,15 @@ export const useBladeStore = defineStore("blade-store", {
   state: (): BladeStoreState => ({
     connector: null,
     signer: null,
+    signers: [],
     accountId: null,
     hasSession: false,
   }),
 
   actions: {
-    setSigner(connector: BladeConnector | null) {
-      this.signer = connector && connector?.getSigner();
+    initialize(connector: BladeConnector | null) {
+      this.signers = connector && connector?.getSigners();
+      this.signer = this.signers && this.signers[0];
       this.accountId = (this.signer?.getAccountId() ?? null) as AccountId | null;
       this.hasSession = !!this.signer && !!this.accountId;
       useDemoStore().account = this.accountId?.toString() || null;
@@ -53,6 +56,11 @@ export const useBladeStore = defineStore("blade-store", {
       });
 
       void this.fetchMyBalance();
+    },
+
+    setSigner(signer: BladeSigner | null) {
+      this.signer = signer;
+      this.accountId = (this.signer?.getAccountId() ?? null) as AccountId | null;
     },
 
     async getAccountBalance() {
