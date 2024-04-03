@@ -40,18 +40,39 @@ async function loadWallet() {
 }
 ```
 
-| API                                                        | Description                                           |
-| ---------------------------------------------------------- | ----------------------------------------------------- |
-| `bladeSigner.getAccountId()`                               | Get accountId of active account.                      |
-| \`bladeSigner.getAccountBalance( accountId:AccountId\\     | string)\`                                             |
-| \`bladeSigner.getAccountInfo( accountId:AccountId\\        | string)\`                                             |
-| `bladeSigner.checkTransaction(transaction:Transaction)`    | Check that a transaction is valid.                    |
-| `bladeSigner.populateTransaction(transaction:Transaction)` | Set transaction id with active account.               |
-| `bladeSigner.call(request:Executable)`                     | Sign and execute a transaction with active account.   |
-| `bladeSigner.signTransaction(transaction:Transaction)`     | Sign a transaction with active account.               |
-| `bladeSigner.getLedgerId()`                                | Ledger Id of the currently connected network.         |
-| `bladeSigner.getMirrorNetwork()`                           | Return array of mirror nodes for the current network. |
-| `bladeSigner.getNetwork()`                                 | Get map of nodes for the current hedera network.      |
+## API
+
+[Read the TypeDoc API documentation](https://blade-labs.github.io/blade-web3.js/)
+
+### BladeConnector
+
+| Method                                                 | Description                                              |
+| ------------------------------------------------------ | -------------------------------------------------------- |
+| `bladeConnector.createSession(params?: SessionParams)` | Create session with Blade Wallet.                        |
+| `bladeConnector.killSession()`                         | Close the session with Blade Wallet.                     |
+| `bladeConnector.getSigner()`                           | Get the currently active BladeSigner.                    |
+| `bladeConnector.getSigners()`                          | Get a list of paired BladeSigner objects.                |
+| `bladeConnector.onWalletLocked(callback)`              | Execute a callback when wallet is locked.                |
+| `bladeConnector.onWalletUnlocked(callback)`            | Execute a callback when wallet is unlocked.              |
+| `bladeConnector.onSessionDisconnect(callback)`         | Execute a callback when a session has been disconnected. |
+| `bladeConnector.onSessionExpire(callback)`             | Execute a callback when a session has expired.           |
+
+### BladeSigner
+
+| Method                                                                                               | Description                                                      |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `bladeSigner.getAccountId()`                                                                         | Get accountId of active account.                                 |
+| `bladeSigner.getAccountBalance(accountId: AccountId⎮string)`                                         | Retrieve account balance by accountId                            |
+| `bladeSigner.getAccountInfo(accountId: AccountId⎮string)`                                            | Get information about a Hedera account on the connected network. |
+| `bladeSigner.checkTransaction(transaction: Transaction)`                                             | Check that a transaction is valid.                               |
+| `bladeSigner.populateTransaction(transaction: Transaction)`                                          | Set transaction id and node accounts using active account.       |
+| `bladeSigner.call(request: Executable)`                                                              | Execute a transaction with provider account.                     |
+| `bladeSigner.sign(message: UInt8Array[])`                                                            | Sign a transaction with active wallet account.                   |
+| `bladeSigner.signTransaction(transaction: Transaction)`                                              | Sign a transaction with active wallet account.                   |
+| `bladeSigner.getLedgerId()`                                                                          | Ledger Id of the currently connected network.                    |
+| `bladeSigner.getMirrorNetwork()`                                                                     | Get an array of mirror nodes for the current network.            |
+| `bladeSigner.getNetwork()`                                                                           | Get a map of nodes for the current hedera network.               |
+| `bladeSigner.handshake(serverAccountId: string, serverSignature: string, payload: HandshakePayload)` | Make secure client-server handshake                              |
 
 ## Development
 
