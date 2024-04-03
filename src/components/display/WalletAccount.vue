@@ -8,11 +8,6 @@ defineProps<{
   accountId?: AccountId,
   network?: string,
 }>();
-
-const endSession = ()=>{
-  bladeStore.setSigner(null);
-  (window as any).bladeConnect.killSession();
-}
 </script>
 
 <template>

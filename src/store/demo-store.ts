@@ -43,7 +43,7 @@ export const useDemoStore = defineStore('demo-store', {
           this.availableAccounts = await this.connector.createSession({network: this.network});
 
           this.connector.onWalletLocked(() => {
-            useBladeStore().setSigner(null);
+            useBladeStore().initialize(null);
           });
 
           this.connector.onSessionDisconnect(() => {
@@ -54,16 +54,14 @@ export const useDemoStore = defineStore('demo-store', {
             this.disconnect();
           });
 
-          useBladeStore().setSigner(connector);
+          useBladeStore().initialize(connector);
         }
       } catch (err) {
-        useBladeStore().setSigner(null);
+        useBladeStore().initialize(null);
 
         if (err instanceof Error) {
           if (err.name === BladeWalletError.ExtensionNotFound) {
             this.bladeNotFound = true;
-          } else if (err.name === BladeWalletError.NoSession) {
-            console.warn(`No active blade session.`);
           } else if (err.message === `The user's wallet is locked.`) {
             console.warn(`User wallet is locked.`);
           } else {
@@ -79,9 +77,9 @@ export const useDemoStore = defineStore('demo-store', {
     },
     onAccountChange() {
       if (this.account) {
-        this.connector?.selectAccount(this.account).then(() => {
-          useBladeStore().setSigner(this.connector as BladeConnector);
-        });
+        const store = useBladeStore();
+        const signer = store.signers!.find(s => s.getAccountId().toString() === this.account);
+        store.setSigner(signer!);
       }
     },
     disconnect() {
@@ -90,7 +88,7 @@ export const useDemoStore = defineStore('demo-store', {
         .finally(() => {
           this.isBusy = false;
           this.connector = null;
-          useBladeStore().setSigner(null);
+          useBladeStore().initialize(null);
         });
     }
   },
