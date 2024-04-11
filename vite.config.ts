@@ -1,6 +1,7 @@
 import {ConfigEnv, defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import {nodePolyfills} from 'vite-plugin-node-polyfills';
 import {createHtmlPlugin} from "vite-plugin-html";
 import {resolve} from 'path';
 import components from 'unplugin-vue-components/vite';
@@ -77,6 +78,12 @@ export default async function ({ mode }: ConfigEnv) {
     },
 
     plugins: [
+      nodePolyfills({
+        include: ["buffer"],
+        globals: {
+          Buffer: true
+        }
+      }),
       createHtmlPlugin({
         inject: {
           data: {
