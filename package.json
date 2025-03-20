@@ -50,8 +50,8 @@
     "@types/tailwindcss": "^3.1.0",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
-    "@vitejs/plugin-basic-ssl": "^1.1.0",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
+    "@vitejs/plugin-vue": "^5.2.3",
     "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
@@ -69,8 +69,8 @@
     "unplugin-auto-import": "^0.12.1",
     "unplugin-icons": "^0.15.1",
     "unplugin-vue-components": "^0.22.12",
-    "vite": "^5.4.14",
+    "vite": "^6.2.2",
     "vite-plugin-html": "^3.2.2",
-    "vite-plugin-node-polyfills": "^0.21.0"
+    "vite-plugin-node-polyfills": "^0.23.0"
   }
 }
