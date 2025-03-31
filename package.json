@@ -69,7 +69,7 @@
     "unplugin-auto-import": "^0.12.1",
     "unplugin-icons": "^0.15.1",
     "unplugin-vue-components": "^0.22.12",
-    "vite": "^6.2.2",
+    "vite": "^6.2.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-node-polyfills": "^0.23.0"
   }
